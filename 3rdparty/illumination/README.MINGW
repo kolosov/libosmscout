@@ -1,0 +1,119 @@
+Introduction
+============
+
+* This documentation assumes that you install MinGW to c:\mingw and
+  MSys to c:\msys\1.0. You can however install theem anywhere
+  else (while MinGW and MSys might have some installation
+  recommendations, too). Just exchange the path with your chosen paths.
+
+Install MinGW
+=============
+
+* Entpack binutils-2.17.50-20070129-1.tar.gz to c:\mingw
+* Entpack gcc-core-3.4.5-20060117-1.tar.gz to c:\mingw
+* Entpack gcc-g++-3.4.5-20060117-1.tar.gz to c:\mingw
+* If you are using Windows Vista:
+  Entpack gcc-vista-3.4.5-20060117-1.tar.gz to c:\mingw
+* Entpack mingw-runtime-3.12.tar.gz to c:\mingw
+* Entapck w32api-3.9.tar.gz to c:\mingw
+
+Install MSys
+============
+
+* Install MSYS-1.0.10.exe (and point post installation script to your
+  MinGW installation)
+* Install msysDTK-1.0.1.exe
+* Update the msys installation by entpacking
+   msysCORE-1.0.11-2007.01.19-1.tar.bz2 to the msys/1.0 directory.
+* For Windows Vista you currently need to install an manifest files for
+  the msys command "install", "install-info" and "patch"! See cygwin
+  mailing list for details...
+
+Prepare mingPORT installation...
+================================
+
+* Download wget-1.9.1-mingwPORT.tar.bz2 and wget-1.9.1.tar.gz
+* Goto msys-shell
+* Entpack wget-1.9.1-mingwPORT.tar.bz2 to /tmp
+* Copy wget-1.9.1.tar.gz to /tmp
+* Goto subdirectory /tmp/wget-1.9.1/mingwPORT and execute mingwPORT.sh
+* Answer all question with default value but the first regarding
+  download.
+  This will build and install wget (which is needed for installation
+  of the next additional packages).
+* After successfull execution you should have a working wget
+
+Install additional mingPORTs
+============================
+
+* Go online (the mingwPORT.sh scripts you will call now, will fetch
+  application sources from the internet).
+
+* For packages below: Enpack package (skipping the package-named
+  directory in the archive of course), enter the mingwPORT directory and
+  call mingwPORT.sh to download, compile and install it.
+- autoconf-2.61-mingwPORT.tar.bz2 (you can find this package currently
+  only in the patch tracker on the Sourceforge page for MinGW)
+- automake-1.10-mingwPORT.tar.bz2 (you can find this package currently
+  only in the patch tracker on the Sourceforge page for MinGW)
+- zlib-1.2.3-mingwPORT.tar.bz2
+- libpng-1.2.8-mingwPORT.tar.bz2
+- libiconv-1.10-mingwPORT.tar.bz2 (you need to do a
+  "touch c:/ming/bin/iconv" before)
+- Copy <MinGW>/bin/libiconv2.dll to iconv.dll to get pkg-config working
+- libtool-1.5.22-mingwPORT.tar.bz
+
+Get pkg-config to work
+======================
+
+* To get pkgconfig working, go to
+  "http://www.gimp.org/~tml/gimp/win32/downloads.html", download the
+  following packages and enpack them to your mingw directory
+  (skipping the package-named directory in the archive of course).
+- glib-2.6.5.zip
+- gettext-runtime-0.13.1.zip
+- pkgconfig-0.15.zip
+
+Compile and install libxml2
+===========================
+
+* Add XML support using libxml2:
+- download the source archive (currently libxml2-2.6.28.tar.gz) for
+  libxml2 (www.libxml.org)
+- Enpack it, call "configure", "make" and "make install". This will
+  install libxml2 to /usr/local/
+
+Fix installation
+================
+
+* Copy the contents of "c:\mingw\share\aclocal to"
+  "c:\msys\1.0\share\aclocal"(that seems to be the searchpath for
+  autoconf) Otherwise the PKG_CONFIG macro will not be found
+  by autoconf (it will not appear in "aclocal.m4").
+
+Set shell environment
+=====================
+
+* set PKG_CONFIG_PATH to the following dirctories:
+- Your Illumination top level directory, to allow building of other
+  Illumination programs using configure and make.
+- Add /c/mingw/lib/pkgconfig to make pkg-config find the libpng package.
+- Add /usr/local/lib/pkgconfig to make pkg-config find the
+  libxml2 package.
+
+Build Illumination, demos and applications
+==========================================
+
+* Build Illumination
+- Checkout the Illumination sources as described on the sourceforge page
+- Call the reconf script (this should not show any errors)
+- Call configure (might show missing packages and functions but should
+  not stop with error)
+- Call make
+
+* Build the various examples and applications in the Illumination
+  subversion repository
+- Call reconf, configure, make
+- Execute src/.libs/<Application>.exe
+
+

@@ -1,0 +1,49 @@
+Introduction
+============
+
+To compile Illumination under Mac OS X you need the Apple development
+package.
+
+We further suggest to use Fink to install the necessary third party
+libraries, while in principle any way resulting in the necessray
+third party libraries installed should work.
+
+You need subversion client to check out the current development
+version.
+
+Currently Illumination can be compiled and run under Mac OS X
+using the X11 library and server as part of the Mac OS X distribution.
+
+The Curses backend will work, too.
+
+Fink
+====
+
+Following packages should be installed (other packages may necessary or
+dependent packages may installed automatically):
+
+autoconf 2.5
+automake 1.9
+libiconv
+libjpeg
+libpng
+libtiff
+libtool14
+libungif
+libxml2
+ncurses-dev
+pkgconfig
+
+Make sure that the binaries of the Fink installation (normally "/sw/bin")
+are before the corresponding Apple tools in the search path.
+
+
+X11
+===
+
+You can call the configure script without any parameters. The X11 libraries
+will be autodetected.
+
+Since there seems to be issues with correctly handling the alt key as
+alt I just added a hack that interprets the Apple key als X11 alt key,
+too.

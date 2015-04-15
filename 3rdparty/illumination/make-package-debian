@@ -1,0 +1,5 @@
+if test -L debian ; then
+  rm debian
+fi
+ln -s packaging/debian debian
+dpkg-buildpackage -rfakeroot -B 

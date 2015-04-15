@@ -1,0 +1,303 @@
+illumination (0.2.20101221-1) unstable; urgency=low
+
+  * Added xrandr dependency.
+
+ -- Tim Teulings <tim@teulings.org>  Tue, 21 Dec 2010 10:35:09 +0100
+
+illumination (0.2.20101220-1) unstable; urgency=low
+
+  * Many, many fixes and improvements.
+
+ -- Tim Teulings <tim@teulings.org>  Mon, 20 Dec 2010 19:10:45 +0100
+
+illumination (0.2.20101010-1) unstable; urgency=low
+
+  * Bump version number, to make sure that application get the new
+    library version.
+
+ -- Tim Teulings <tim@teulings.org>  Sun, 10 Oct 2010 17:31:21 +0200
+
+illumination (0.2.20101005-4) unstable; urgency=low
+
+  * Deactivated backbuffer clipping, if running under hildon.
+    There seems to be some bug in cairo?
+
+ -- Tim Teulings <tim@teulings.org>  Sun, 10 Oct 2010 15:55:52 +0200
+
+illumination (0.2.20101005-3) unstable; urgency=low
+
+  * Change package name and catalog search path to avoid conflict
+    with libillumination0 package.
+
+ -- Tim Teulings <tim@teulings.org>  Thu,  7 Oct 2010 08:30:02 +0200
+
+illumination (0.2.20101005-2) unstable; urgency=low
+
+  * Fixed dependency on libillumination.
+
+ -- Tim Teulings <tim@teulings.org>  Wed,  6 Oct 2010 22:32:13 +0200
+
+illumination (0.2.20101005-1) unstable; urgency=low
+
+  * Initial version of 0.2 release.
+
+ -- Tim Teulings <tim@teulings.org>  Wed,  6 Oct 2010 21:00:05 +0200
+
+illumination (0.1.20100702-1) unstable; urgency=low
+
+  * Added new Create method
+
+ -- Tim Teulings <tim@teulings.org>  Fri,  2 Jul 2010 14:48:16 +0200
+
+illumination (0.1.20100513-1) unstable; urgency=low
+
+  * Added support for boolean menu entries, fixed build, improved file
+    dialog.
+
+ -- Tim Teulings <tim@teulings.org>  Thu, 13 May 2010 11:57:17 +0200
+
+illumination (0.1.20100412-1) unstable; urgency=low
+
+  * Fixes to file dialog Ok button handling
+
+ -- Tim Teulings <tim@teulings.org>  Mon, 12 Apr 2010 22:26:40 +0200
+
+illumination (0.1.20100319-1) unstable; urgency=low
+
+  * Fixed virtual numeric input popup backspace handling
+
+ -- Tim Teulings <tim@teulings.org>  Sat, 20 Mar 2010 10:20:42 +0100
+
+illumination (0.1.20100215-1) unstable; urgency=low
+
+  * Improved help dialog.
+
+ -- Tim Teulings <tim@teulings.org>  Mon, 15 Feb 2010 22:45:48 +0100
+
+illumination (0.1.20100210-1) unstable; urgency=low
+
+  * Fix save dialog handling, fix TimeSelect formatting
+
+ -- Tim Teulings <tim@teulings.org>  Wed, 10 Feb 2010 08:24:37 +0100
+
+illumination (0.1.20100208-1) unstable; urgency=low
+
+  * Fixed save file dialog selection handling in case of preset path.
+
+ -- Tim Teulings <tim@teulings.org>  Mon,  8 Feb 2010 23:22:48 +0100
+
+illumination (0.1.20100201-1) unstable; urgency=low
+
+  * Fixed save file dialog.
+  * Fixed number editing popups.
+
+ -- Tim Teulings <tim@teulings.org>  Mon,  1 Feb 2010 23:56:35 +0100
+
+illumination (0.1.20100122-1) unstable; urgency=low
+
+  * Bug fix regarding kineticscrolling in empty tables.
+
+ -- Tim Teulings <tim@teulings.org>  Fri, 22 Jan 2010 09:01:32 +0100
+
+illumination (0.1.20100120-1) unstable; urgency=low
+
+  * Rebuild because ofbroken dependencies
+
+ -- Tim Teulings <tim@teulings.org>  Wed, 20 Jan 2010 21:34:37 +0100
+
+illumination (0.1.20100115-1) unstable; urgency=low
+
+  * Fixed scrollbar handling.
+
+ -- Tim Teulings <tim@teulings.org>  Thu, 14 Jan 2010 22:43:37 +0100
+
+illumination (0.1.20100114-1) unstable; urgency=low
+
+  * Rebuild for new package version.
+
+ -- Tim Teulings <tim@teulings.org>  Thu, 14 Jan 2010 21:13:33 +0100
+
+illumination (0.1.20100104-2) unstable; urgency=low
+
+  * Large rows only if selection is required.
+
+ -- Tim Teulings <tim@teulings.org>  Wed, 13 Jan 2010 22:11:03 +0100
+
+illumination (0.1.20100104-1) unstable; urgency=low
+
+  * Various improvements.
+
+ -- Tim Teulings <tim@teulings.org>  Mon,  4 Jan 2010 19:00:09 +0100
+
+illumination (0.1.20091202-1) unstable; urgency=low
+
+  * Bugfixes, scrollable areas improvement.
+  * NetworkManager support.
+  * DisplayManager support.
+  * EventLoop bugfixes.
+
+ -- Tim Teulings <tim@teulings.org>  Wed,  2 Dec 2009 22:57:40 +0100
+
+illumination (0.1.20091110-2) unstable; urgency=low
+
+  * * Fixed hangups on audio playing.
+
+ -- Tim Teulings <tim@teulings.org>  Wed, 18 Nov 2009 22:26:00 +0100
+
+illumination (0.1.20091110-1) unstable; urgency=low
+
+  * More maemo5 support.
+
+ -- Tim Teulings <tim@teulings.org>  Wed, 11 Nov 2009 09:14:46 +0100
+
+illumination (0.1.20091009-1) unstable; urgency=low
+
+  * More widget and theming support.
+
+ -- Tim Teulings <tim@teulings.org>  Fri,  9 Oct 2009 17:37:53 +0200
+
+illumination (0.1.20090910-1) unstable; urgency=low
+
+  * Improved menu support.
+  * A lot of maemo 5 specific features.
+  * Start using Def stuff for abstracting GUI.
+  * Added behaviour class.
+  * Bug fixes.
+  * Table model cleanup.
+
+ -- Tim Teulings <tim@teulings.org>  Thu, 10 Sep 2009 21:09:23 +0200
+
+illumination (0.1.20090520-1) unstable; urgency=low
+
+  * Fixed bug in date calculation.
+  * Improved menu and menu popup handling.
+  * Added some code for GUI abstraction.
+
+ -- Tim Teulings <tim@teulings.org>  Wed, 20 May 2009 21:12:43 +0200
+
+illumination (0.1.20090329-1) unstable; urgency=low
+
+  * Fixed runtime gtk theming error accessing state-hint for
+    text entries on diablo, while it is only available starting with
+    fremantle.
+
+ -- Tim Teulings <tim@teulings.org>  Sun, 29 Mar 2009 16:35:32 +0200
+
+illumination (0.1.20090322-1) unstable; urgency=low
+
+  * Now works under fremantle.
+  * Supports new alignment of dialog buttons in fremantle.
+  * Bugfixes.
+
+ -- Tim Teulings <tim@teulings.org>  Sun, 22 Mar 2009 12:04:41 +0100
+
+illumination (0.1.20090214-1) unstable; urgency=low
+
+  * Improved menues.
+  * Improved clipboard support.
+  * Improved virtual keyboard support.
+
+ -- Tim Teulings <tim@teulings.org>  Sat, 14 Feb 2009 19:41:40 +0100
+
+illumination (0.1.20090205-1) unstable; urgency=low
+
+  * Work on supporting clipboard features of virtual keyboard.
+
+ -- Tim Teulings <tim@teulings.org>  Thu, 5 Feb 2009 21:38:00 +0100
+
+illumination (0.1.20090129-1) unstable; urgency=low
+
+  * Number of bugfixes.
+  * Improved drawing.
+
+ -- Tim Teulings <tim@teulings.org>  Thu, 29 Jan 2009 23:00:00 +0100
+
+illumination (0.1.20081201-1) unstable; urgency=low
+
+  * Number of bugfixes.
+  * Improved progress dialog.
+
+ -- Tim Teulings <tim@teulings.org>  Mon, 1 Dec 2008 22:30:00 +0100
+
+llumination (0.1.20081201-1) unstable; urgency=low
+
+  * Number of bugfixes.
+  * Improved progress dialog.
+
+ -- Tim Teulings <tim@teulings.org>  Mon, 1 Dec 2008 22:30:00 +0100
+
+illumination (0.1.20081120-2) unstable; urgency=low
+
+  * Fixed bug in table view.
+
+ -- Tim Teulings <tim@teulings.org>  Fri, 21 Nov 2008 08:30:00 +0100
+
+illumination (0.1.20081120-1) unstable; urgency=low
+
+  * Improved hildon theming.
+  * Input helper.
+  * Proper DBus support.
+
+ -- Tim Teulings <tim@teulings.org>  Thu, 20 Nov 2008 22:00:00 +0100
+
+illumination (0.1.20080916-1) unstable; urgency=low
+
+  * Simplified theming.
+  * Several theming fixes.
+
+ -- Tim Teulings <tim@teulings.org>  Sun, 24 Aug 2008 12:30:35 +0200
+
+illumination (0.1.20080821-2) unstable; urgency=low
+
+  * Improved Gtk theming for buttons and comboboxes.
+
+ -- Tim Teulings <tim@teulings.org>  Sun, 24 Aug 2008 12:30:35 +0200
+
+illumination (0.1.20080821-1) unstable; urgency=low
+
+  * Theme improvements, bugfixes.
+
+ -- Tim Teulings <tim@teulings.org>  Thu, 21 Aug 2008 22:30:35 +0200
+
+illumination (0.1.20080630-2) unstable; urgency=low
+
+  * Fixed Scroller issues.
+
+ -- Tim Teulings <tim@teulings.org>  Mon, 30 Jul 2008 22:30:35 +0200
+
+illumination (0.1.20080630-1) unstable; urgency=low
+
+  * New version from upstream with bug fixes and new features.
+
+ -- Tim Teulings <tim@teulings.org>  Mon, 30 Jul 2008 22:30:35 +0200
+
+illumination (0.1.20080607-5) unstable; urgency=low
+
+  * Fixed dependencies for libillumination-dev package.
+
+ -- Tim Teulings <tim@teulings.org>  Thu, 12 Jul 2008 23:11:35 +0200
+
+illumination (0.1.20080607-4) unstable; urgency=low
+
+  * Fixed dependencies for libillumination-dev package.
+
+ -- Tim Teulings <tim@teulings.org>  Mon, 9 Jul 2008 23:16:35 +0200
+
+illumination (0.1.20080607-3) unstable; urgency=low
+
+  * Fixed *.pc file.
+
+ -- Tim Teulings <tim@teulings.org>  Mon, 9 Jul 2008 21:02:35 +0200
+
+illumination (0.1.20080607-2) unstable; urgency=low
+
+  * Added missing header.
+
+ -- Tim Teulings <tim@teulings.org>  Mon, 9 Jul 2008 08:15:35 +0200
+
+illumination (0.1.20080607-1) unstable; urgency=low
+
+  * Initial Release to mameo repository.
+
+ -- Tim Teulings <tim@teulings.org>  Sat, 7 Jul 2008 17:48:35 +0200
+

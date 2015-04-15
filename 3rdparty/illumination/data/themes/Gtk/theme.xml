@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<Config>
+  <Button>
+    <Frame name='sFrame' type='none'/>
+    <Frame name='iFrame' type='none'/>
+    <Frame name='tFrame' type='none'/>
+  </Button>
+  <Date>
+    <Frame name='frame' type='box'/>
+    <Background name='emptyFill'>
+      <Fill name='normal' type='pattern' pattern='bigChess' fg='halfShine' bg='shine'/>
+      <Fill name='selected' type='inherit'/>
+    </Background>
+  </Date>
+  <Display>
+    <Colors>
+      <Color name='background' value='gray80'/>
+      <Color name='tableText' value='black'/>
+      <Color name='text' value='black'/>
+      <Color name='shine' value='grey95'/>
+      <Color name='halfShine' value='grey82'/>
+      <Color name='halfShadow' value='grey45'/>
+      <Color name='shadow' value='grey20'/>
+      <Color name='fill' value='royal blue'/>
+      <Color name='fillText' value='white'/>
+      <Color name='warn' value='red'/>
+      <Color name='disabled' value='grey20'/>
+      <Color name='focus' value='grey30'/>
+      <Color name='black' value='black'/>
+      <Color name='white' value='white'/>
+      <Color name='helpBackground' value='light yellow'/>
+    </Colors>
+    <Fills>
+      <Fill name='select' value='royal blue'/>
+      <Fill name='helpBackground' value='light yellow'/>
+    </Fills>
+  </Display>
+  <FrameGroup>
+    <Frame name="frame" type="group3D" />
+  </FrameGroup>
+  <Menu>
+    <Frame name='frame' type='none'/>
+  </Menu>
+  <QuickHelp>
+    <Frame name='frame' type='single'/>
+  </QuickHelp>
+  <StatusLine>
+    <Frame name='frame' type='single3DOut'/>
+    <Frame name='innerFrame' type='single3DIn'/>
+  </StatusLine>
+  <TimeLine>
+    <Frame name='frame' type='box'/>
+    <Background name='normal'>
+      <Fill name='normal' type='plain' color='black'/>
+      <Fill name='selected' type='inherit'/>
+    </Background>
+  </TimeLine>
+  <Toolbar equalSize='TRUE'>
+    <Frame name='frame' type='single3DOut'/>
+  </Toolbar>
+  <Window>
+    <Frame name='frame' type='button'/>
+  </Window>
+</Config>

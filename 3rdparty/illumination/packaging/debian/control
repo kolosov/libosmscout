@@ -1,0 +1,21 @@
+Source: illumination
+Priority: optional
+Maintainer: Tim Teulings <tim@teulings.org>
+Build-Depends: debhelper (>= 5), libtiff4-dev, libpng12-dev, libgif-dev, libjpeg62-dev, libx11-dev, libxext-dev, libice-dev, libsm-dev, libxml2-dev, libxft-dev, libxrender-dev, libfreetype6-dev, zlib1g-dev, libcairo2-dev, libncurses5-dev
+Standards-Version: 3.7.2
+
+Package: libillumination0-dev
+Section: libdevel
+Architecture: any
+Provides: libillumination-dev
+Conflicts: libillumination-dev
+Depends: libillumination0 (= ${Source-Version}), ${shlibs:Depends}
+Description: A C++ library for creating GUIs
+ A C++ library for creating GUIs. See http://illumination.sf.net for details.
+
+Package: libillumination0
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: A C++ library for creating GUIs
+ A C++ library for creating GUIs. See http://illumination.sf.net for details.

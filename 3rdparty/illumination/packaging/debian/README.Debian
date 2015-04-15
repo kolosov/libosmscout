@@ -1,0 +1,7 @@
+Illumination for Debian
+-----------------------
+
+The debian build makes use of all image formats that illumination
+currently supports.
+
+ -- Tim Teulings <tim@teulings.org>, Wed, 27 Oct 2004 21:05:35 +0200

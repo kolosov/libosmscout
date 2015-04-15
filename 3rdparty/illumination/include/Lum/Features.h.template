@@ -1,0 +1,14 @@
+/* include/Lum/Features.h Generated from include/Lum/Features.h.template by cmake.  */
+
+#ifndef LUM_FEATURES
+#define LUM_FEATURES
+
+/* Illumination implements thread handling using pthreads implementation */
+#cmakedefine ILLUMINATION_THREAD_PTHREAD
+
+/* Illumination uses special gcc compiler features to explicitely export symbols */
+
+#cmakedefine ILLUMINATION_EXPORT_SYMBOLS
+
+#endif
+

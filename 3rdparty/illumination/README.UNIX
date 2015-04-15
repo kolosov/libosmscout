@@ -1,0 +1,202 @@
+Introduction
+============
+
+This document describes some necessarry environment settings
+for getting Illumination to run under Linux.
+
+Required Packages
+=================
+
+Under Unix Illumination will use autoconf, automake and pkg-config
+for detecting and adapting to the environment.
+
+For Unix Illumination currently offers X11 or Curses backends. You need
+the necessary development stuff for this packackes to get some visual
+output.
+
+If you add Gtk (Gtk base libraries like Gdk and Gconf) development
+packages, Illumination will be able to use Gtk theming code.
+
+If you add gstreamer development headers Illumination will be able to
+output sound using gstreamer.
+
+Adding hildon (maemo) devlopment headers, Illumination will embed itself into
+the hildon environment (on screen keyboard, theming etc...).
+
+Debian/Ubuntu
+=============
+
+Packages
+--------
+
+At the time of writing building Illumination required the following
+packages (together with their dependencies and recommendations):
+
+* autoconf (recommends automake)
+* pkg-config (for detetcting available packages during configure)
+* libtool (for easy building of static and shared libraries)
+* libstdc++6-4.3-dev (depnending of te excact g++ version used)
+* libxml2-dev (for loading and storing XMl files)
+* subversion (for downloading the sources)
+
+For X11 support:
+* libx11-dev (for using the X11 backend)
+* libxft-dev
+* libxext-dev
+
+For GTK support:
+* libgtk2.0-dev
+* libdbus-glib-1-dev
+* libgstreamer0.10-dev (for sound and video support)
+* libgstreamer-plugins-base0.10-dev (for sound and video support)
+
+For Curses/terminal support:
+* libncurses5-dev
+
+Other, optional packages:
+* libcairo2-dev (insteadof using X11 drawing primitives)
+* libgif-dev  (for loading and storing of gif images)
+* libjpeg62-dev (for loading and storing of jpg images)
+* libpng12-dev (for loading and storing of png images)
+* libtiff4-dev (for loading and storing of tiff images)
+
+Downloading source
+------------------
+
+Sources can be downloaded by using the following svn command:
+
+svn checkout http://illumination.svn.sourceforge.net/svnroot/illumination/trunk/Illumination <target directory>
+
+<target directory> should be a new, empty directory named "Illumination"
+(you can of course choose another name if you like).
+
+Initial setup
+-------------
+
+Enter the Illumination directory and call:
+
+./autogen.sh
+
+This should generate a up to date configure script (together with helper scripts).
+
+After that call the generated configure script:
+
+./configure
+
+You can parse various options to the configure script to enable/disable
+various features but normally the script should autodetect everything on
+its own.
+
+Please check the result for the following (similiar spelled) lines:
+
+checking pkg-config is at least version 0.9.0... yes
+
+=> pkg-config found
+
+checking for XML2... yes
+
+=> XML parser found
+
+checking for X... libraries , headers
+
+=> X11 found
+
+checking for XFT... yes
+
+=> Xft found
+
+checking for CAIRO... yes
+
+=> Cairo backend enabled (optional)
+
+checking for curses and panel library... yes
+
+=> Curses enabled (optional)
+
+checking for PNG... yes
+
+=> PNG support enabled (optional)
+
+checking for GTK... yes
+checking for DBUS... yes
+checking for GSTREAMER... yes
+checking for GCONF... yes
+
+=> GTK subsystem detection
+
+If you installed other packages to fix errors or enable
+additional feature (and remove something) just call
+
+./configure
+
+again.
+
+Build
+-----
+
+Just call
+
+make
+
+(if you have a multi-processor system you can also call "make -j 3"
+for building three sources in parallel on a dual-core machine).
+
+If there is no error you can continue with the set up of the
+environment to build applications based on libIllumination.
+
+Environment settings
+====================
+
+To use Illumination without installation and also build Illumination
+base application without installing Illumination the following environment
+settings are suggested:
+
+To get the Illumination library found:
+
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:<path to Illumination>src/.libs
+
+To get Illumination find its language catalogs:
+
+ILLUMINATION_ROOT=<path to Illumination>
+
+To the autoconf/automake configure scripts find the Illumination headers
+and libraries:
+
+PKG_CONFIG_PATH=$PKG_CONFIG_PATH:<path to Illumination>
+
+Building applications
+=====================
+
+You can now build application using libIlluminations. For exmaple to checkout
+the Illumination demos just call:
+
+svn checkout http://illumination.svn.sourceforge.net/svnroot/illumination/trunk/Demos <target directory>
+
+Or for EightyOne the Sudoku clone:
+
+svn checkout http://illumination.svn.sourceforge.net/svnroot/illumination/trunk/EightyOne <target directory>
+
+<target directory> should again be an empty directory, bested named by the application name
+(Demos or EightyOne in this case).
+
+All applications again use a configure script to detected dependencies and create makefiles.
+Normally just doing:
+
+./autogen.sh && ./configure && make
+
+Should build the application ("&&" just executes the commands in row if the last command was
+successful).
+
+After that you can start the application by just calling it:
+
+./Demos/src/Simple
+./Demos/src/Controls
+
+or
+
+./EightyOne/src/EightyOne
+
+Troubleshooting
+===============
+
+Waiting for testers

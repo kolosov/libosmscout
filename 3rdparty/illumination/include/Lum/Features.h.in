@@ -1,0 +1,31 @@
+/* include/Lum/Features.h.in.  Generated from configure.ac by autoheader.  */
+
+#ifndef LUM_FEATURES
+#define LUM_FEATURES
+
+/* Illumination implements thread handling using pthreads implementation */
+#undef ILLUMINATION_THREAD_PTHREAD
+
+/* Illumination uses special gcc compiler features to explicitely export symbols */
+#undef ILLUMINATION_EXPORT_SYMBOLS
+
+/* libcairo found */
+#undef LUM_HAVE_LIB_CAIRO
+
+/* Mac OS X found */
+#undef LUM_HAVE_LIB_CARBON
+
+/* curses and panel library found */
+#undef LUM_HAVE_LIB_CURSES
+
+/* hildon libraries found */
+#undef LUM_HAVE_LIB_HILDON
+
+/* WIN32 found */
+#undef LUM_HAVE_LIB_WIN32
+
+/* X11 found */
+#undef LUM_HAVE_LIB_X
+
+#endif
+

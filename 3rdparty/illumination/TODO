@@ -1,0 +1,179 @@
+Current version:
+================
+
+Goals:
+* Theming
+* API improvement and cleanup
+* Make all existing gadgets working smoothly
+
+Bugs:
+* Slider/Scale: Fix differences in max-pos displaying.
+
+Theming:
+* Different colors for color of text color textSelect in edit and tables
+* Gtk:
+  + Tabs (drawing order of tabs)
+  + Scrollbars (inner or outer frame)
+* OS/WIN32:
+  + TableView Popup frames (2000, XP, Vista)
+  + Vertical fuelgauge (artifacts XP)
+  + Selection (XP, Vista)
+  + StatusLine (XP, Vista)
+* Editable Combobox:
+  + Move image into frame!
+  + Set background of value to NULL, if editable combobox has a border.
+
+Controls:
+* Progress:
+  + Find an better way to show progress in progress dialog using less space.
+* Dialog:
+  + Add support for giving sizes to the window itself. Avoiding problems
+    with dialogs wrapping content in additional panels or similar.
+* ScrollPane
+* Minimalize access to parent controls, to get rid of attribute "parent"
+* Minimalize access to GetWindow() in classes derived form Object.
+* Move Object::SetWindow visitor handling to Window classes
+* Move Object focus handling visitors to windo classes
+* Move Object::DrawBackground handling to Window classes
+* Make Menu inherit from Window.
+
+API:
+* Table:
+  + Add Header::FormatProvider for header label alignment similar to TableView.
+
+Hildon:
+* Try to support the slide out keyboard better and support 
+  pressing qualifier and character sequentially.
+* Where does double click time come from?
+
+PropertiesDialog:
+* Support WeightJinni
+* Support FindMine
+* Support Knips
+* Support DiceJinni
+* Support Kandis
+
+Environment:
+* Check for libExt
+
+Next minor version:
+===================
+
+Goals:
+* Complete Curses support
+* better keyboard support in gadgets
+
+OS/Curses:
+* Extended tests on monochrome terminals. Likely we have to rewrite
+  DrawChar and DrawFill methods to use inversion instead of direct coloring.
+* Fix Display of umlauts by testing for ncursesw and using that for compiling
+  and linking (ncursesw handles wchar_t).
+* Support for Shift qualifiers?
+
+Next major version:
+===================
+
+Goals:
+* Complete features to support standard gadgets
++ Enhanced drawing API
++ Improve text, table, tree and menues
+
+OS:
+* Add support for paragraph text object including different fonts, alignments,
+  colors together with cursor calculation etc...
+
+OS/X11:
+* Add support for X11 Selections.
+* Support for pattern bitmaps.
+* Support for channels.
+* Activate session management.
+
+Controls:
+* Label:
+  + Add support for hierachical headlines and indention.
+  + Add support for multiple objects in row.
+* Text:
+  + Add external formatter that preparses text using various notations.
+  + Make texts selectable if flaged.
+  + Add support for format strings to calculate resulting width and make
+    text usable for stuff like DateView TimeView and
+    TextClock (not implemented).
+* Table:
+  + Support for column sorting.
+  + Add support for search-by-typing in table
+  + Add support for multi-line selections
+* Make all controls, that could work on more than one numeric model type,
+  templates?
+
+Dialogs:
+* Add font dialog.
+* File:
+  + Make directory shortcut list editable.
+  + Add support for reading OS specific directory shortcuts (GNOME).
+  + Make buttons in DirSelect a Toggle.
+  + Add support for multi-file selections.
+
+API:
+ * Add a way to get the RGB value of a color to calculate shading from
+   one unknown color to another.
+
+Next major version:
+===================
+
+Goals:
+* Enhanced gadget feature set
+* Possible switch to cairo as only drawing framework.
+* More complete Mac OS X support
+
+Controls:
+* PatternLegend
+* QuickHelp
+* ViewOneOfN
+
+OS:
+* Rename Window::Open and Window::Close (and the corresponding actions) to
+  Create and Destroy.
+  Possibly even place the corresponding code into constructor and destructor.
+  (but how do we assign the controls then? Delay until the first call to
+  Show()?).
+* Reimplement "Reinit" for windows.
+* Define generic OS-independent Drag&Drop API.
+* Move complete doubleclick handling to Base::Display and use timer
+  from Base::DateTime?
+* Tray
+  * Add support for mouse events (single click, right click, double click)
+  * Add support for tray title (add missing code for windows)
+  * Potentially add support for ballon popups!?
+* Add bitmap cache for caching of temporary bitmaps and improving
+  performance.
+* Add Actions for triggering if screenblanker kicks in and out.
+
+OS/Cairo:
+* Implement more primitives.
+
+OS/Carbon:
+* Add code to Makefile for correct building of bundles.
+* Finish native and/or Cairo driver.
+* Add theming.
+
+OS/X11:
+* Catch DBus signal if screen blanker kicks in and out.
+* Catch DBus signal for triggering configuration storage.
+
+Basic object system:
+* Try to separate internal interface from external interface by following
+  strategy used for Display, Window, DrawInfo (PIMPL).
+* Add support for storing window size.
+
+Controls:
+* DateView/TimeView:
+  + Get better size adaption to localized date/time string
+* Dialog:
+  + Add support for storing sizes in external config file. Add support
+    for internally naming dialogs, to give them a unique id.
+* Edit:
+  + Add support for cursor blinking.
+
+Tests:
+* Add tests to build system and make sure that all test succeed.
+

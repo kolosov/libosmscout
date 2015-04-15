@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<!--
+
+Ue=&#220;
+ae=&#228;
+oe=&#246;
+ue=&#252;
+ss=&#223;
+-->
+
+<illumination-l10n-catalog>
+  <!-- General -->
+  <entry key="DLG_BUTTON_ABOUT">_Über...</entry>
+  <entry key="DLG_BUTTON_CANCEL">_Abbruch</entry>
+  <entry key="DLG_BUTTON_HELP">_Hilfe</entry>
+  <entry key="DLG_BUTTON_OK">_Ok</entry>
+  <entry key="DLG_BUTTON_CLOSE">_Schliessen</entry>
+  <entry key="DLG_BUTTON_QUIT">_Beeenden</entry>
+
+  <!-- Places -->
+  <entry key="PLACE_ROOT">Dateisystem</entry>
+  <entry key="PLACE_DESKTOP">Schreibtisch</entry>
+  <entry key="PLACE_DOCUMENT">Dokumente</entry>
+  <entry key="PLACE_DOWNLOAD">Downloads</entry>
+  <entry key="PLACE_HOME">Persönlicher Ordner</entry>
+  <entry key="PLACE_MUSIC">Musik</entry>
+  <entry key="PLACE_PICTURE">Bilder</entry>
+  <entry key="PLACE_PUBLICSHARE">Austausch</entry>
+  <entry key="PLACE_MUSIC">Musik</entry>
+  <entry key="PLACE_TEMPLATE">Vorlagen</entry>
+  <entry key="PLACE_TMP">Temporäres</entry>
+  <entry key="PLACE_VIDEO">Videos</entry>
+
+  <!-- Dlg/File -->
+  <entry key="DLG_FILE_LOCATIONS">_Verzeichnisse</entry>
+  <entry key="DLG_FILE_RELOAD">_Neu laden</entry>
+  <entry key="DLG_FILE_SHOW_HIDDEN">Zeige verborgene Dateien</entry>
+  <entry key="DLG_FILE_UP">..</entry>
+
+  <!-- Dlg/Password -->
+  <entry key="DLG_PASSWORD_LABEL_USERNAME">Benutzername:</entry>
+  <entry key="DLG_PASSWORD_LABEL_PASSWORD">Passwort:</entry>
+  <entry key="DLG_PASSWORD_LABEL_SAVE_PASSWORD">Speichere Passwort:</entry>
+
+  <!-- Model/Dir -->
+  <entry key="MODEL_DIR_FILENAME">Dateiname</entry>
+  <entry key="MODEL_DIR_SIZE">Größe</entry>
+  <entry key="MODEL_DIR_DATE">Datum</entry>
+  <entry key="MODEL_DIR_DIR">(Verzeichnis)</entry>
+
+  <!-- About -->
+  <entry key="ABOUT_TAB_ABOUT">Über</entry>
+  <entry key="ABOUT_TAB_ILLUMINATION">Illumination</entry>
+  <entry key="ABOUT_VERSION">Version</entry>
+  <entry key="ABOUT_AUTHOR">Autor:</entry>
+  <entry key="ABOUT_CONTACT">Kontakt:</entry>
+  <entry key="ABOUT_COPYRIGHT">Copyright:</entry>
+  <entry key="ABOUT_LICENCE">Lizenz:</entry>
+  <entry key="ABOUT_SLOGAN">Diese Applikation wurde mittels der Bibliothek
+'Illumination' - dem C++ Framework für
+grafische Oberflächen - geschrieben!
+Bitte besuchen sie http://illumination.sourceforge.net
+für mehr Informationen!</entry>
+
+  <!-- RGBControl -->
+  <entry key="RGBCONTROL_RED">Rot:</entry>
+  <entry key="RGBCONTROL_GREEN">Grün:</entry>
+  <entry key="RGBCONTROL_BLUE">Blau:</entry>
+
+  <!-- Time -->
+  <entry key="TIME_VALUE">Wert:</entry>
+  <entry key="TIME_HOUR">Stunde:</entry>
+  <entry key="TIME_MINUTE">Minute:</entry>
+  <entry key="TIME_SECOND">Sekunde:</entry>
+
+  <!-- Defaults -->
+  <entry key="MENU_PROJECT">_Datei</entry>
+  <entry key="MENU_PROJECT_QUIT">_Beenden</entry>
+
+  <entry key="MENU_EDIT">_Bearbeiten</entry>
+  <entry key="MENU_EDIT_SETTINGS">_Einstellungen</entry>
+
+  <entry key="MENU_HELP">_Hilfe</entry>
+  <entry key="MENU_HELP_HELP">Hilfe</entry>
+  <entry key="MENU_HELP_ABOUT">_Über</entry>
+
+</illumination-l10n-catalog>

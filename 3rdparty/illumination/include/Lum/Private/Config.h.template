@@ -1,0 +1,30 @@
+/* include/Lum/Private/Config.h Generated from include/Lum/Private/Config.h.template by cmake.  */
+
+#ifndef LUM_CONFIG
+#define LUM_CONFIG
+
+#cmakedefine HAVE_UNISTD_H
+#cmakedefine HAVE_PWD_H
+#cmakedefine HAVE_LIBGEN_H
+#cmakedefine HAVE_SYS_TIME_H
+
+#cmakedefine HAVE_X11
+#cmakedefine HAVE_LIB_WIN32
+
+#cmakedefine HAVE_SELECT
+#cmakedefine HAVE_GETPID
+#cmakedefine HAVE_GETTIMEOFDAY
+#cmakedefine HAVE_GMTIME_R
+#cmakedefine HAVE_LOCALTIME_R
+
+#cmakedefine HAVE_MBSRTOWCS
+#cmakedefine HAVE_WCSRTOMBS
+
+#cmakedefine HAVE_GETSYSTEMTIMEASFILETIME
+#cmakedefine HAVE_SLEEPEX
+#cmakedefine HAVE_GMTIME_S
+#cmakedefine HAVE_LOCALTIME_S
+
+#cmakedefine HAVE_FINDFIRSTFILEW
+
+#endif
