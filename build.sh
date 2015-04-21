@@ -46,6 +46,14 @@ if [ ! -f ${OSM_PKG_CONFIG_PATH}/libosmscout-map.pc ]; then
 	cd ..
 fi
 
+#build Import
+#if [ ! -f ${OSM_PKG_CONFIG_PATH}/libosmscout-map.pc ]; then
+	echo "Build Import"
+	cd Import
+	./autogen.sh && PKG_CONFIG_PATH=${OSM_PKG_CONFIG_PATH} ./configure --prefix=$TARGET_OSM_BIN
+	make -j8 && make install
+	cd ..
+#fi
 #build libosmscout-map-qt
 if [ ! -f ${OSM_PKG_CONFIG_PATH}/libosmscout-map-qt.pc ]; then
 	echo "Build libosmscout-map-qt"
