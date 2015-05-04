@@ -1,0 +1,7 @@
+mkdir ~/target
+run ./build.sh
+add PKG_CONFIG path for OSMScout2 for example like this :
+	PKG_CONFIG = PKG_CONFIG_PATH=/home/sk/work/osm/target/lib/pkgconfig pkg-config
+
+set LD_LIBRARY_PATH and run OSMScout path to maps
+
