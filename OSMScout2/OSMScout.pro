@@ -2,6 +2,7 @@ TEMPLATE = app
 
 QT_CONFIG -= no-pkg-config
 
+PKG_CONFIG = PKG_CONFIG_PATH=/home/sk/work/osm/target/lib/pkgconfig pkg-config
 CONFIG += qt warn_on debug link_pkgconfig thread c++11 silent
 
 QT += core gui widgets qml quick svg positioning

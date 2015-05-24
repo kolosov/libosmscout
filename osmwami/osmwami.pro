@@ -1,8 +1,8 @@
 TEMPLATE = app
 
-PKG_CONFIG = PKG_CONFIG_PATH=/home/sk/work/osm/target/lib/pkgconfig pkg-config
 QT_CONFIG -= no-pkg-config
 
+PKG_CONFIG = PKG_CONFIG_PATH=/home/sk/work/osm/target/lib/pkgconfig pkg-config
 CONFIG += qt warn_on debug link_pkgconfig thread c++11 silent
 
 QT += core gui widgets qml quick svg positioning
@@ -43,14 +43,15 @@ DISTFILES += \
     qml/main.qml \
     qml/custom/LineEdit.qml \
     qml/custom/DialogActionButton.qml \
-    qml/custom/LocationEdit.qml \
     qml/custom/LocationSearch.qml \
     qml/custom/ScrollIndicator.qml \
     qml/custom/MapDialog.qml \
-    qml/RoutingDialog.qml \
     qml/AboutDialog.qml \
-    qml/SearchDialog.qml
-    pics/DeleteText.svg
+    qml/SearchDialog.qml \
+    pics/DeleteText.svg \
+    pics/Minus.svg \
+    pics/Plus.svg \
+    pics/Search.svg
 
 RESOURCES += \
     res.qrc
