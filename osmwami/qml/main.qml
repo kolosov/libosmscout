@@ -16,8 +16,11 @@ Window {
     objectName: "main"
     title: "OSMScout"
     visible: true
-    width: 480
-    height: 800
+    width: 1600
+    height: 900
+
+    property double myPlaceX: 55.74352
+    property double myPlaceY: 37.60600
 
     function openAboutDialog() {
         var component = Qt.createComponent("AboutDialog.qml")
@@ -97,6 +100,7 @@ Window {
             Layout.fillHeight: true
             focus: true
 
+
             function getFreeRect() {
                 return Qt.rect(Theme.horizSpace,
                                Theme.vertSpace+searchDialog.height+Theme.vertSpace,
@@ -152,6 +156,7 @@ Window {
                 id: searchDialog
 
                 y: Theme.vertSpace
+                visible: true
 
                 anchors.horizontalCenter: parent.horizontalCenter
 
@@ -171,12 +176,171 @@ Window {
                 }
             }
 
+            Rectangle {
+                id: meItem
+
+                x: 400
+                y: 400
+                Image {
+                    source: "qrc:/pics/pin.png"
+                }
+            }
+
+            Rectangle {
+                id: buttonWhereami
+                //text: "Where am I?"
+                x: Theme.horizSpace + 10
+                //y: parent.height-height-Theme.vertSpace
+                y: Theme.vertSpace + 10
+                color: "transparent"
+                radius: 40
+
+                width: 220; height: 105
+
+                visible: true
+                signal clicked
+
+                Image {
+                    id: buttonWhereamiButtonImageStyle
+                    source: "qrc:/pics/logo.png"
+                    //opacity: buttonWhereami.pressed ? 0.5 : 1.0
+                    anchors.centerIn: parent
+                }
+                MouseArea {
+                    anchors.fill: buttonWhereami
+                    onClicked:
+                    {
+                        buttonWhereami.clicked()
+                        console.log(buttonWhereami + " clicked" )
+
+                        map.showCoordinates(myPlaceX, myPlaceY)
+                    }
+                }
+            }
+
+            Rectangle {
+                id: buttonSearch
+                x: Theme.horizSpace
+                y: parent.height-height-Theme.vertSpace
+                color: "transparent"
+                radius: 40
+
+                width: 520; height: 88
+
+                visible: true
+                signal clicked
+
+                Image {
+                    id: buttonSearchButtonImageStyle
+                    source: "qrc:/pics/Search.png"
+                    //opacity: buttonWhereami.pressed ? 0.5 : 1.0
+                    anchors.centerIn: parent
+                }
+
+
+
+                MouseArea {
+                    anchors.fill: buttonSearch
+                    onClicked:
+                    {
+                        buttonSearch.clicked()
+                        console.log(buttonSearch + " clicked" )
+
+                        //nextPage(buttonName)
+                    }
+                }
+            }
+
+            Button {
+                id: testRoute1
+                text: "TestRoute1"
+                x: Theme.horizSpace
+                y: 500
+
+                onClicked: {
+                    var startLo = Qt.createComponent()
+                    //routingModel.setStartAndTarget(startLocation,
+                    //                               destinationLocation)
+                }
+            }
+/*
+            Button {
+                id: buttonNameForSearch
+                //text: "Where am I?"
+                //x: Theme.horizSpace
+                x: parent.width-width-Theme.horizSpace
+                y: parent.height-height-Theme.vertSpace
+
+                //y: parent.height-height-Theme.vertSpace
+                //y: Theme.vertSpace
+                visible: true
+
+                style: ButtonStyle {
+                    id: buttonNameForSearchButtonStyle
+
+                    Image {
+                        id: buttonNameForSearchButtonImageStyle
+                        source: "qrc:/pics/Search.png"
+                        opacity: basicButton.pressed ? 0.5 : 1.0
+                        anchors.centerIn: parent
+                    }
+
+                }
+                onClicked:
+                {
+                    console.log(buttonWhereami + " clicked" )
+                    //nextPage(buttonName)
+                }
+            }
+*/
+
+/*
+            Button
+            {
+                buttonWhereami: "Where am I?"
+                id:spb1; text: qsTr(buttonWhereami);
+                onClicked:
+                {
+                    console.log(buttonWhereami + " clicked" )
+                    //nextPage(buttonName)
+                }
+                Image {
+
+                    source: "qrc:/pics/logo.png"
+                    anchors.centerIn: parent
+                }
+            }
+
+            ColumnLayout {
+                id: whereami
+
+                x: Theme.horizSpace
+
+                //y: parent.height-height-Theme.vertSpace
+                y: Theme.vertSpace
+                visible: true
+
+                //spacing: Theme.mapButtonSpace
+
+                MapButton {
+                    id: iAmButton
+                    label: "Where am I?"
+
+                    onClicked: {
+                        openAboutDialog()
+                    }
+                }
+            }
+*/
+
+/*
             // Bottom left column
             ColumnLayout {
                 id: info
 
                 x: Theme.horizSpace
                 y: parent.height-height-Theme.vertSpace
+                visible: true
 
                 spacing: Theme.mapButtonSpace
 
@@ -189,6 +353,7 @@ Window {
                     }
                 }
             }
+            */
 
             // Bottom right column
             ColumnLayout {
