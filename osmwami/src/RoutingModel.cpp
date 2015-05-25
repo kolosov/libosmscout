@@ -404,7 +404,7 @@ void RoutingListModel::setStartAndTarget(Location* start,
   osmscout::TypeConfigRef             typeConfig=DBThread::GetInstance()->GetTypeConfig();
   osmscout::FastestPathRoutingProfile routingProfile(typeConfig);
   osmscout::Way                       routeWay;
-  osmscout::Vehicle                   vehicle=osmscout::vehicleCar;//settings->GetRoutingVehicle();
+  osmscout::Vehicle                   vehicle=osmscout::vehicleFoot;//settings->GetRoutingVehicle();
 
   if (vehicle==osmscout::vehicleFoot) {
     routingProfile.ParametrizeForFoot(*typeConfig,

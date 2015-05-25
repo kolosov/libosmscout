@@ -60,9 +60,11 @@ int main(int argc, char* argv[])
 
   app.setOrganizationName("libosmscout");
   app.setOrganizationDomain("libosmscout.sf.net");
-  app.setApplicationName("OSMScout");
+  app.setApplicationName("WhereAmI");
 
   settings=new Settings();
+
+  settings->SetRoutingVehicle(osmscout::vehicleFoot);
 
   //qRegisterMetaType<RenderMapRequest>();
   qRegisterMetaType<DatabaseLoadedResponse>();
