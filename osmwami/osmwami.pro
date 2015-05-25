@@ -51,7 +51,15 @@ DISTFILES += \
     pics/DeleteText.svg \
     pics/Minus.svg \
     pics/Plus.svg \
-    pics/Search.svg
+    pics/Search.svg \
+    pics/Hotels.png \
+    pics/Museums.png \
+    pics/Nightclubs.png \
+    pics/Pharmacies.png \
+    pics/Restaurants.png \
+    pics/logo.png \
+    pics/pin.png \
+    pics/Search.png
 
 RESOURCES += \
     res.qrc

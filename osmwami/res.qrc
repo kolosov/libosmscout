@@ -14,5 +14,13 @@
         <file>pics/Search.svg</file>
         <file>pics/Route.svg</file>
         <file>pics/Plus.svg</file>
+        <file>pics/Hotels.png</file>
+        <file>pics/Museums.png</file>
+        <file>pics/Nightclubs.png</file>
+        <file>pics/Pharmacies.png</file>
+        <file>pics/Restaurants.png</file>
+        <file>pics/logo.png</file>
+        <file>pics/pin.png</file>
+        <file>pics/Search.png</file>
     </qresource>
 </RCC>
