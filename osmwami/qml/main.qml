@@ -94,6 +94,13 @@ Window {
         id: content
         anchors.fill: parent
 
+        POI {
+            id: myPOI
+        }
+        RoutingListModel {
+            id: myRoutingModel
+        }
+
         Map {
             id: map
             Layout.fillWidth: true
@@ -258,7 +265,11 @@ Window {
                 y: 500
 
                 onClicked: {
-                    var startLo = Qt.createComponent()
+                    //myPOI.LoadPOI()
+
+                        myRoutingModel.setStartAndTarget(myPOI.startLoc,
+                                                       myPOI.endLoc)
+                    //var startLo = Qt.createComponent()
                     //routingModel.setStartAndTarget(startLocation,
                     //                               destinationLocation)
                 }

@@ -26,6 +26,8 @@
 #include "SearchLocationModel.h"
 #include "RoutingModel.h"
 
+#include "ownpoi.h"
+
 // Application settings
 #include "Settings.h"
 
@@ -76,6 +78,8 @@ int main(int argc, char* argv[])
   qmlRegisterType<RoutingListModel>("net.sf.libosmscout.map", 1, 0, "RoutingListModel");
 
   qmlRegisterSingletonType<Theme>("net.sf.libosmscout.map", 1, 0, "Theme", ThemeProvider);
+
+  qmlRegisterType<OwnPOI>("net.sf.libosmscout.map", 1, 0, "POI");
 
   osmscout::log.Debug(true);
 
