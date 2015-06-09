@@ -21,7 +21,8 @@
 
 MainWindow::MainWindow(const SettingsRef& settings,
                        DBThread *dbThread)
- : QQmlApplicationEngine(QUrl::fromLocalFile("qml/main.qml")),
+ //: QQmlApplicationEngine(QUrl::fromLocalFile("qml/main.qml")),
+   : QQmlApplicationEngine(QUrl("qrc:///qml/main.qml")),
    settings(settings),
    dbThread(dbThread)
 {
