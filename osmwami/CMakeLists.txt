@@ -43,8 +43,7 @@ set(osmwami_headers src/Settings.h src/Theme.h src/DBThread.h
  src/MapWidget.h src/MainWindow.h src/SearchLocationModel.h 
  src/RoutingModel.h src/ownpoi.h )
 
-
-add_executable(osmwami ${osmwami_src})
+add_executable(osmwami ${osmwami_src} res.qrc)
 target_link_libraries(osmwami Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Quick 
  ${osmscout_lib} ${osmscoutmap_lib} ${osmscoutmapqt_lib})
 
