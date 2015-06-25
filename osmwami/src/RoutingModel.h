@@ -85,9 +85,13 @@ class RoutingListModel : public QAbstractListModel
     Q_PROPERTY(int count READ rowCount)
 
 public slots:
+	void loadPOI(double myPlaceLat, double myPlaceLon);
+	void setStartAndTargetByCoord(double startLat, double startLon, double targetLat, double targetLon);
+	void setStartAndTarget(osmscout::GeoCoord start, osmscout::GeoCoord target);
     void setStartAndTarget(Location* start,
                            Location* target);
     void clear();
+
 
 private:
     struct RouteSelection

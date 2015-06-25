@@ -392,6 +392,291 @@ void RoutingListModel::DumpNameChangedDescription(const osmscout::RouteDescripti
   route.routeSteps.push_back(changed);
 }
 
+void RoutingListModel::loadPOI(double myPlaceLat, double myPlaceLon)
+{
+	osmscout::GeoCoord myPlace;
+	myPlace.lat = myPlaceLat;
+	myPlace.lon = myPlaceLon;
+
+	DBThread::GetInstance()->LoadPOI(myPlace);
+}
+
+void RoutingListModel::setStartAndTargetByCoord(double startLat, double startLon, double targetLat, double targetLon)
+{
+	osmscout::GeoCoord start,target;
+	start.lat = startLat;
+	start.lon = startLon;
+	target.lat = targetLat;
+	target.lon = targetLon;
+
+	//DBThread::GetInstance()->AddPOI(start);
+	setStartAndTarget(start, target);
+}
+
+void RoutingListModel::setStartAndTarget(osmscout::GeoCoord start, osmscout::GeoCoord target)
+{
+	qDebug() << "setStartAndTargetByCoord";
+
+	//double myPlaceX = 55.74352, myPlaceY = 37.60600;
+	//double myDestX = 55.71046, myDestY = 37.47212;
+
+
+	beginResetModel();
+
+	route.routeSteps.clear();
+	std::cout << "Routing from '" << start.lat << ":" << start.lon  << "' to '" << target.lat << ":" << target.lon << "'" << std::endl;
+	//std::cout << "Routing from '" << myPlaceX << ":" << myPlaceY  << "' to '" << myDestX << ":" << myDestY << "'" << std::endl;
+	//std::cout << "Routing from '" << start->getName().toLocal8Bit().data() << "' to '" << target->getName().toLocal8Bit().data() << "'" << std::endl;
+
+	osmscout::TypeConfigRef             typeConfig=DBThread::GetInstance()->GetTypeConfig();
+	osmscout::FastestPathRoutingProfile routingProfile(typeConfig);
+	osmscout::Way                       routeWay;
+	osmscout::Vehicle                   vehicle=osmscout::vehicleFoot;//settings->GetRoutingVehicle();
+
+	  if (vehicle==osmscout::vehicleFoot) {
+	    routingProfile.ParametrizeForFoot(*typeConfig,
+	                                      5.0);
+	  }
+	  else if (vehicle==osmscout::vehicleBicycle) {
+	    routingProfile.ParametrizeForBicycle(*typeConfig,
+	                                         20.0);
+	  }
+	  else /* car */ {
+	    std::map<std::string,double> speedMap;
+
+	    GetCarSpeedTable(speedMap);
+
+	    routingProfile.ParametrizeForCar(*typeConfig,
+	                                     speedMap,
+	                                     160.0);
+	  }
+
+	  osmscout::ObjectFileRef startObject;
+	  size_t                  startNodeIndex;
+
+	  osmscout::ObjectFileRef targetObject;
+	  size_t                  targetNodeIndex;
+
+
+	  if (!DBThread::GetInstance()->GetClosestRoutableNode(start.lat, start.lon,
+	                                                       vehicle,
+	                                                       1000,
+	                                                       startObject,
+	                                                       startNodeIndex)) {
+	    std::cerr << "There was an error while routing!" << std::endl;
+	  }
+
+	  if (!startObject.Valid()) {
+	    std::cerr << "Cannot find a routing node close to the start location" << std::endl;
+	  }
+
+	  if (!DBThread::GetInstance()->GetClosestRoutableNode(target.lat, target.lon,
+	                                                       vehicle,
+	                                                       1000,
+	                                                       targetObject,
+	                                                       targetNodeIndex)) {
+	    std::cerr << "There was an error while routing!" << std::endl;
+	  }
+
+	  if (!targetObject.Valid()) {
+	    std::cerr << "Cannot find a routing node close to the target location" << std::endl;
+	  }
+
+	  if (!DBThread::GetInstance()->CalculateRoute(vehicle,
+	                                               routingProfile,
+	                                               startObject,
+	                                               startNodeIndex,
+	                                               targetObject,
+	                                               targetNodeIndex,
+	                                               route.routeData)) {
+	    std::cerr << "There was an error while routing!" << std::endl;
+	    return;
+	  }
+
+	  std::cout << "Route calculated" << std::endl;
+
+	  DBThread::GetInstance()->TransformRouteDataToRouteDescription(vehicle,
+	                                                                routingProfile,
+	                                                                route.routeData,
+	                                                                route.routeDescription, "START", "END");
+
+	  std::cout << "Route transformed" << std::endl;
+
+	  size_t roundaboutCrossingCounter=0;
+	  int    lastStepIndex=-1;
+
+	  std::list<osmscout::RouteDescription::Node>::const_iterator prevNode=route.routeDescription.Nodes().end();
+	  for (std::list<osmscout::RouteDescription::Node>::const_iterator node=route.routeDescription.Nodes().begin();
+	       node!=route.routeDescription.Nodes().end();
+	       ++node) {
+	    osmscout::RouteDescription::DescriptionRef                 desc;
+	    osmscout::RouteDescription::NameDescriptionRef             nameDescription;
+	    osmscout::RouteDescription::DirectionDescriptionRef        directionDescription;
+	    osmscout::RouteDescription::NameChangedDescriptionRef      nameChangedDescription;
+	    osmscout::RouteDescription::CrossingWaysDescriptionRef     crossingWaysDescription;
+
+	    osmscout::RouteDescription::StartDescriptionRef            startDescription;
+	    osmscout::RouteDescription::TargetDescriptionRef           targetDescription;
+	    osmscout::RouteDescription::TurnDescriptionRef             turnDescription;
+	    osmscout::RouteDescription::RoundaboutEnterDescriptionRef  roundaboutEnterDescription;
+	    osmscout::RouteDescription::RoundaboutLeaveDescriptionRef  roundaboutLeaveDescription;
+	    osmscout::RouteDescription::MotorwayEnterDescriptionRef    motorwayEnterDescription;
+	    osmscout::RouteDescription::MotorwayChangeDescriptionRef   motorwayChangeDescription;
+	    osmscout::RouteDescription::MotorwayLeaveDescriptionRef    motorwayLeaveDescription;
+
+	    desc=node->GetDescription(osmscout::RouteDescription::WAY_NAME_DESC);
+	    if (desc.Valid()) {
+	      nameDescription=dynamic_cast<osmscout::RouteDescription::NameDescription*>(desc.Get());
+	    }
+
+	    desc=node->GetDescription(osmscout::RouteDescription::DIRECTION_DESC);
+	    if (desc.Valid()) {
+	      directionDescription=dynamic_cast<osmscout::RouteDescription::DirectionDescription*>(desc.Get());
+	    }
+
+	    desc=node->GetDescription(osmscout::RouteDescription::WAY_NAME_CHANGED_DESC);
+	    if (desc.Valid()) {
+	      nameChangedDescription=dynamic_cast<osmscout::RouteDescription::NameChangedDescription*>(desc.Get());
+	    }
+
+	    desc=node->GetDescription(osmscout::RouteDescription::CROSSING_WAYS_DESC);
+	    if (desc.Valid()) {
+	      crossingWaysDescription=dynamic_cast<osmscout::RouteDescription::CrossingWaysDescription*>(desc.Get());
+	    }
+
+	    desc=node->GetDescription(osmscout::RouteDescription::NODE_START_DESC);
+	    if (desc.Valid()) {
+	      startDescription=dynamic_cast<osmscout::RouteDescription::StartDescription*>(desc.Get());
+	    }
+
+	    desc=node->GetDescription(osmscout::RouteDescription::NODE_TARGET_DESC);
+	    if (desc.Valid()) {
+	      targetDescription=dynamic_cast<osmscout::RouteDescription::TargetDescription*>(desc.Get());
+	    }
+
+	    desc=node->GetDescription(osmscout::RouteDescription::TURN_DESC);
+	    if (desc.Valid()) {
+	      turnDescription=dynamic_cast<osmscout::RouteDescription::TurnDescription*>(desc.Get());
+	    }
+
+	    desc=node->GetDescription(osmscout::RouteDescription::ROUNDABOUT_ENTER_DESC);
+	    if (desc.Valid()) {
+	      roundaboutEnterDescription=dynamic_cast<osmscout::RouteDescription::RoundaboutEnterDescription*>(desc.Get());
+	    }
+
+	    desc=node->GetDescription(osmscout::RouteDescription::ROUNDABOUT_LEAVE_DESC);
+	    if (desc.Valid()) {
+	      roundaboutLeaveDescription=dynamic_cast<osmscout::RouteDescription::RoundaboutLeaveDescription*>(desc.Get());
+	    }
+
+	    desc=node->GetDescription(osmscout::RouteDescription::MOTORWAY_ENTER_DESC);
+	    if (desc.Valid()) {
+	      motorwayEnterDescription=dynamic_cast<osmscout::RouteDescription::MotorwayEnterDescription*>(desc.Get());
+	    }
+
+	    desc=node->GetDescription(osmscout::RouteDescription::MOTORWAY_CHANGE_DESC);
+	    if (desc.Valid()) {
+	      motorwayChangeDescription=dynamic_cast<osmscout::RouteDescription::MotorwayChangeDescription*>(desc.Get());
+	    }
+
+	    desc=node->GetDescription(osmscout::RouteDescription::MOTORWAY_LEAVE_DESC);
+	    if (desc.Valid()) {
+	      motorwayLeaveDescription=dynamic_cast<osmscout::RouteDescription::MotorwayLeaveDescription*>(desc.Get());
+	    }
+
+	    if (crossingWaysDescription.Valid() &&
+	        roundaboutCrossingCounter>0 &&
+	        crossingWaysDescription->GetExitCount()>1) {
+	      roundaboutCrossingCounter+=crossingWaysDescription->GetExitCount()-1;
+	    }
+
+	    if (startDescription.Valid()) {
+	      DumpStartDescription(startDescription,
+	                           nameDescription);
+	    }
+	    else if (targetDescription.Valid()) {
+	      DumpTargetDescription(targetDescription);
+	    }
+	    else if (turnDescription.Valid()) {
+	      DumpTurnDescription(turnDescription,
+	                          crossingWaysDescription,
+	                          directionDescription,
+	                          nameDescription);
+	    }
+	    else if (roundaboutEnterDescription.Valid()) {
+	      DumpRoundaboutEnterDescription(roundaboutEnterDescription,
+	                                     crossingWaysDescription);
+
+	      roundaboutCrossingCounter=1;
+	    }
+	    else if (roundaboutLeaveDescription.Valid()) {
+	      DumpRoundaboutLeaveDescription(roundaboutLeaveDescription,
+	                                     nameDescription);
+
+	      roundaboutCrossingCounter=0;
+	    }
+	    else if (motorwayEnterDescription.Valid()) {
+	      DumpMotorwayEnterDescription(motorwayEnterDescription,
+	                                   crossingWaysDescription);
+	    }
+	    else if (motorwayChangeDescription.Valid()) {
+	      DumpMotorwayChangeDescription(motorwayChangeDescription);
+	    }
+	    else if (motorwayLeaveDescription.Valid()) {
+	      DumpMotorwayLeaveDescription(motorwayLeaveDescription,
+	                                   directionDescription,
+	                                   nameDescription);
+	    }
+	    else if (nameChangedDescription.Valid()) {
+	      DumpNameChangedDescription(nameChangedDescription);
+	    }
+	    else {
+	      continue;
+	    }
+
+	    int currentStepIndex;
+
+	    if (lastStepIndex>=0) {
+	        currentStepIndex=lastStepIndex+1;
+	    }
+	    else {
+	        currentStepIndex=0;
+	    }
+
+	    if (currentStepIndex>=0) {
+	      route.routeSteps[currentStepIndex].distance=DistanceToString(node->GetDistance());
+	      route.routeSteps[currentStepIndex].time=TimeToString(node->GetTime());
+
+	      if (prevNode!=route.routeDescription.Nodes().end() &&
+	          node->GetDistance()-prevNode->GetDistance()!=0.0) {
+	        route.routeSteps[currentStepIndex].distanceDelta=DistanceToString(node->GetDistance()-prevNode->GetDistance());
+	      }
+
+	      if (prevNode!=route.routeDescription.Nodes().end() &&
+	          node->GetTime()-prevNode->GetTime()!=0.0) {
+	        route.routeSteps[currentStepIndex].timeDelta=TimeToString(node->GetTime()-prevNode->GetTime());
+	      }
+	    }
+
+	    lastStepIndex=route.routeSteps.size()-1;
+
+	    prevNode=node;
+	  }
+
+	  if (DBThread::GetInstance()->TransformRouteDataToWay(vehicle,
+	                                                       route.routeData,
+	                                                       routeWay)) {
+	    DBThread::GetInstance()->ClearRoute();
+	    DBThread::GetInstance()->AddRoute(routeWay);
+	  }
+	  else {
+	    std::cerr << "Error while transforming route" << std::endl;
+	  }
+
+	  endResetModel();
+
+}
+
 void RoutingListModel::setStartAndTarget(Location* start,
                                          Location* target)
 {
@@ -699,6 +984,7 @@ QHash<int, QByteArray> RoutingListModel::roleNames() const
 
     return roles;
 }
+
 
 RouteStep* RoutingListModel::get(int row) const
 {
