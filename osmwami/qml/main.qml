@@ -19,8 +19,20 @@ Window {
     width: 1600
     height: 900
 
-    property double myPlaceX: 55.74352
-    property double myPlaceY: 37.60600
+    property double deltaLat: 0.00354
+    property double deltaLon: 0.00927
+
+    property double myPlaceLat: 55.74352
+    property double myPlaceLon: 37.60600
+
+    property double myTargetLat: 55.71046
+    property double myTargetLon: 37.47212
+
+    //property double myPlaceLat: 55.74352
+    //property double myPlaceLon: 37.60600
+
+    //property double myTargetLat: 55.71046
+    //property double myTargetLon: 37.47212
 
     function openAboutDialog() {
         var component = Qt.createComponent("AboutDialog.qml")
@@ -220,7 +232,7 @@ Window {
                         buttonWhereami.clicked()
                         console.log(buttonWhereami + " clicked" )
 
-                        map.showCoordinates(myPlaceX, myPlaceY)
+                        map.showCoordinates(myPlaceLat, myPlaceLon)
                     }
                 }
             }
@@ -244,8 +256,6 @@ Window {
                     anchors.centerIn: parent
                 }
 
-
-
                 MouseArea {
                     anchors.fill: buttonSearch
                     onClicked:
@@ -266,9 +276,25 @@ Window {
 
                 onClicked: {
                     //myPOI.LoadPOI()
+                    myRoutingModel.setStartAndTargetByCoord(myPlaceLat, myPlaceLon, myTargetLat, myTargetLon)
+                    //myRoutingModel.setStartAndTarget(myPOI.startLoc, myPOI.endLoc)
+                    //var startLo = Qt.createComponent()
+                    //routingModel.setStartAndTarget(startLocation,
+                    //                               destinationLocation)
+                }
+            }
 
-                        myRoutingModel.setStartAndTarget(myPOI.startLoc,
-                                                       myPOI.endLoc)
+
+            Button {
+                id: loadPOI1
+                text: "LoadPOI"
+                x: Theme.horizSpace
+                y: 600
+
+                onClicked: {
+                    myRoutingModel.loadPOI(myPlaceLat, myPlaceLon)
+                    //myRoutingModel.setStartAndTargetByCoord(myPlaceLat, myPlaceLon, myTargetLat, myTargetLon)
+                    //myRoutingModel.setStartAndTarget(myPOI.startLoc, myPOI.endLoc)
                     //var startLo = Qt.createComponent()
                     //routingModel.setStartAndTarget(startLocation,
                     //                               destinationLocation)

@@ -152,7 +152,7 @@ void DBThread::Initialize()
   QStringList cmdLineArgs = QApplication::arguments();
   QString databaseDirectory = cmdLineArgs.size() > 1 ? cmdLineArgs.at(1) : QDir::currentPath();
   QString stylesheetFilename = cmdLineArgs.size() > 2 ? cmdLineArgs.at(2) : databaseDirectory + QDir::separator() + "standard.oss";
-  iconDirectory = cmdLineArgs.size() > 3 ? cmdLineArgs.at(3) : databaseDirectory + QDir::separator() + "icons";
+  iconDirectory = cmdLineArgs.size() > 3 ? cmdLineArgs.at(3) : databaseDirectory + QDir::separator() + "icons" + QDir::separator();
 #endif
 
   if (database->Open(databaseDirectory.toLocal8Bit().data())) {
@@ -166,6 +166,7 @@ void DBThread::Initialize()
 
       if (styleConfig->Load(stylesheetFilename.toLocal8Bit().data())) {
           painter=new osmscout::MapPainterQt(styleConfig);
+    	  //painter=new osmscout::POIMapPainter(styleConfig);
       }
       else {
         qDebug() << "Cannot load style sheet!";
@@ -204,6 +205,104 @@ void DBThread::Finalize()
   if (database->IsOpen()) {
     database->Close();
   }
+}
+
+bool DBThread::LoadPOI(osmscout::GeoCoord coord)
+{
+	//mutex
+
+	//osmscout::Node aNode;
+	//osmscout::Node aNode;
+
+	double aLat =  currentRenderRequest.lat;
+	double aLon =  currentRenderRequest.lon;
+
+	double deltaLat = 0.00354;
+	double deltaLon = 0.00927;
+
+	double placeLat = aLat + deltaLat/2;
+	double placeLon = aLon + deltaLon/2;
+	std::cout << "Place lat: " << placeLat << " lon: " << placeLon << std::endl;
+
+	//prepare Node TypeInfo
+	const osmscout::TypeInfoRef curNodeType = std::make_shared<osmscout::TypeInfo>();
+	//osmscout::TypeId NodeId = 0xAAAA;
+	//const std::string& NodeGroupName = "MyCafe";
+	//curNodeType->SetNodeId(NodeId);
+	//curNodeType->AddGroup(NodeGroupName);
+
+
+
+	//prepare features
+	//osmscout::FeatureValueBuffer featureBuf;
+	//FeatureValueBuffer buffer = way->GetFeatureValueBuffer();
+	//osmscout::TypeConfigRef aTextConf = std::make_shared<osmscout::TypeConfig>();
+	//osmscout::TextStyleRef aTextStyle = new osmscout::TextStyle();
+	//osmscout::IconStyleRef aIconStyle = new osmscout::IconStyle();
+
+	//prepare icon name
+	//const std::string& Pin1IconName = "Pin_10_1";
+	const std::string& Pin1IconName = "amenity_parking";
+
+	//aIconStyle->SetIconName(Pin1IconName);
+	curNodeType->SetType(Pin1IconName);
+
+	//osmscout::TypeConfigRef MainTypeConig = database->GetTypeConfig();
+
+	//featureBuf.SetType(aTypeConig);
+
+	//prepare Node
+	osmscout::NodeRef aNode = new osmscout::Node();
+	//aNode.Get()->SetCoords(coord);
+	osmscout::GeoCoord newCoord;
+	newCoord.lat = placeLat;
+	newCoord.lon = placeLon;
+	aNode.Get()->SetCoords(newCoord);
+
+	aNode.Get()->SetType(curNodeType);
+
+	//const osmscout::TypeInfoRef aTypeInfo = std::make_shared<osmscout::TypeInfo>();
+
+	//aTypeInfo->SetType("aaa");
+
+	//featureBuf.SetType(aTypeInfo);
+
+	//osmscout::TypeInfoRef type = featureBuf.GetType();
+
+	//aNode.Get()->SetFeatures(featureBuf);
+
+	//osmscout::TypeInfoRef curNodeType = aNode.Get()->GetType();
+
+	data.poiNodes.push_back(aNode);
+/*
+	osmscout::MapParameter        drawParameter;
+	osmscout::AreaSearchParameter searchParameter;
+
+	searchParameter.SetBreaker(renderBreakerRef);
+	searchParameter.SetMaximumAreaLevel(4);
+	searchParameter.SetUseMultithreading(currentMagnification.GetMagnification()<=osmscout::Magnification::magCity);
+
+	std::list<std::string>        paths;
+
+	paths.push_back(iconDirectory.toLocal8Bit().data());
+
+	drawParameter.SetIconPaths(paths);
+	drawParameter.SetPatternPaths(paths);
+	drawParameter.SetDebugPerformance(true);
+	drawParameter.SetOptimizeWayNodes(osmscout::TransPolygon::quality);
+	drawParameter.SetOptimizeAreaNodes(osmscout::TransPolygon::quality);
+	drawParameter.SetRenderBackground(true);
+	drawParameter.SetRenderSeaLand(true);
+	drawParameter.SetBreaker(renderBreakerRef);
+
+	osmscout::MercatorProjection projection;
+	GetProjection(projection);
+
+
+	painter->AddPOILabel(projection, drawParameter, coord.lat, coord.lon, "HHHHHHHEEEEEELLLLLLLLLLOOOOOOO");
+*/
+	return true;
+//	painter->DrawIcon();
 }
 
 void DBThread::GetProjection(osmscout::MercatorProjection& projection)
@@ -462,6 +561,17 @@ bool DBThread::RenderMap(QPainter& painter,
 
   painter.drawImage(dx,dy,*finishedImage);
 
+  //QString testText("TEST TEST TEST");
+  //double myPlaceX = 55.74352, myPlaceY = 37.60600, myX, myY;
+  //projection.GeoToPixel(myPlaceX, myPlaceY,myX, myY);
+
+//  qDebug() << "Screen coord: " << "x=" << myX << " y=" << myY <<
+//		  " width=" << request.width << " height=" << request.height;
+  //painter.drawText(QRectF(0,0,request.width,request.height),
+  //painter.drawText(QRectF(100,100,200.0,200.0),
+//                       testText,
+//                       QTextOption(Qt::AlignCenter));
+
   return finishedImage->width()==(int)request.width &&
          finishedImage->height()==(int)request.height &&
          finishedLon==request.lon &&
@@ -553,6 +663,57 @@ bool DBThread::CalculateRoute(osmscout::Vehicle vehicle,
 bool DBThread::TransformRouteDataToRouteDescription(osmscout::Vehicle vehicle,
                                                     const osmscout::RoutingProfile& routingProfile,
                                                     const osmscout::RouteData& data,
+                                                    osmscout::RouteDescription& description)
+{
+	qDebug() << "Don't call me!!!";
+	return false;
+
+  QMutexLocker locker(&mutex);
+
+  if (!AssureRouter(vehicle)) {
+    return false;
+  }
+
+  if (!router->TransformRouteDataToRouteDescription(data,description)) {
+    return false;
+  }
+
+  /*
+  osmscout::TypeConfigRef typeConfig=router->GetTypeConfig();
+
+  std::list<osmscout::RoutePostprocessor::PostprocessorRef> postprocessors;
+
+  postprocessors.push_back(std::make_shared<osmscout::RoutePostprocessor::DistanceAndTimePostprocessor>());
+  postprocessors.push_back(std::make_shared<osmscout::RoutePostprocessor::StartPostprocessor>(start));
+  postprocessors.push_back(std::make_shared<osmscout::RoutePostprocessor::TargetPostprocessor>(target));
+  postprocessors.push_back(std::make_shared<osmscout::RoutePostprocessor::WayNamePostprocessor>());
+  postprocessors.push_back(std::make_shared<osmscout::RoutePostprocessor::CrossingWaysPostprocessor>());
+  postprocessors.push_back(std::make_shared<osmscout::RoutePostprocessor::DirectionPostprocessor>());
+
+  osmscout::RoutePostprocessor::InstructionPostprocessorRef instructionProcessor=std::make_shared<osmscout::RoutePostprocessor::InstructionPostprocessor>();
+
+  instructionProcessor->AddMotorwayType(typeConfig->GetTypeInfo("highway_motorway"));
+  instructionProcessor->AddMotorwayLinkType(typeConfig->GetTypeInfo("highway_motorway_link"));
+  instructionProcessor->AddMotorwayType(typeConfig->GetTypeInfo("highway_motorway_trunk"));
+  instructionProcessor->AddMotorwayType(typeConfig->GetTypeInfo("highway_trunk"));
+  instructionProcessor->AddMotorwayLinkType(typeConfig->GetTypeInfo("highway_trunk_link"));
+  instructionProcessor->AddMotorwayType(typeConfig->GetTypeInfo("highway_motorway_primary"));
+  postprocessors.push_back(instructionProcessor);
+
+  if (!routePostprocessor.PostprocessRouteDescription(description,
+                                                      routingProfile,
+                                                      *database,
+                                                      postprocessors)) {
+    return false;
+  }*/
+
+  return true;
+}
+
+
+bool DBThread::TransformRouteDataToRouteDescription(osmscout::Vehicle vehicle,
+                                                    const osmscout::RoutingProfile& routingProfile,
+                                                    const osmscout::RouteData& data,
                                                     osmscout::RouteDescription& description,
                                                     const std::string& start,
                                                     const std::string& target)
@@ -632,6 +793,28 @@ void DBThread::AddRoute(const osmscout::Way& way)
   FreeMaps();
 
   emit Redraw();
+}
+
+bool DBThread::GetClosestRoutableNode(const double lat, const double lon,
+                                      const osmscout::Vehicle& vehicle,
+                                      double radius,
+                                      osmscout::ObjectFileRef& object,
+                                      size_t& nodeIndex)
+{
+  QMutexLocker locker(&mutex);
+
+  if (!AssureRouter(vehicle)) {
+    return false;
+  }
+
+  object.Invalidate();
+
+  return router->GetClosestRoutableNode(lat, lon,
+                                            vehicle,
+                                            radius,
+                                            object,
+                                            nodeIndex);
+
 }
 
 bool DBThread::GetClosestRoutableNode(const osmscout::ObjectFileRef& refObject,

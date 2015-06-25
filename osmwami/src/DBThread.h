@@ -31,7 +31,8 @@
 #include <osmscout/RoutingService.h>
 #include <osmscout/RoutePostprocessor.h>
 
-#include <osmscout/MapPainterQt.h>
+//#include <osmscout/MapPainterQt.h>
+#include "POIMapPainter.h"
 
 #include <osmscout/util/Breaker.h>
 
@@ -84,6 +85,8 @@ public slots:
   void Initialize();
   void Finalize();
 
+  bool LoadPOI(osmscout::GeoCoord coord);
+
 private:
   double                        dpi;
 
@@ -101,6 +104,7 @@ private:
   osmscout::StyleConfigRef      styleConfig;
   osmscout::MapData             data;
   osmscout::MapPainterQt        *painter;
+  //osmscout::POIMapPainter      	*painter;
   QString                       iconDirectory;
 
   QImage                        *currentImage;
@@ -158,6 +162,11 @@ public:
                       osmscout::RouteData& route);
 
   bool TransformRouteDataToRouteDescription(osmscout::Vehicle vehicle,
+                                              const osmscout::RoutingProfile& routingProfile,
+                                              const osmscout::RouteData& data,
+                                              osmscout::RouteDescription& description);
+
+  bool TransformRouteDataToRouteDescription(osmscout::Vehicle vehicle,
                                             const osmscout::RoutingProfile& routingProfile,
                                             const osmscout::RouteData& data,
                                             osmscout::RouteDescription& description,
@@ -166,6 +175,12 @@ public:
   bool TransformRouteDataToWay(osmscout::Vehicle vehicle,
                                const osmscout::RouteData& data,
                                osmscout::Way& way);
+
+  bool GetClosestRoutableNode(const double lat, const double lon,
+                                const osmscout::Vehicle& vehicle,
+                                double radius,
+                                osmscout::ObjectFileRef& object,
+                                size_t& nodeIndex);
 
   bool GetClosestRoutableNode(const osmscout::ObjectFileRef& refObject,
                               const osmscout::Vehicle& vehicle,
