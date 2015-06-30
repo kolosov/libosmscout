@@ -31,8 +31,7 @@
 #include <osmscout/RoutingService.h>
 #include <osmscout/RoutePostprocessor.h>
 
-//#include <osmscout/MapPainterQt.h>
-#include "POIMapPainter.h"
+#include <osmscout/MapPainterQt.h>
 
 #include <osmscout/util/Breaker.h>
 
@@ -104,7 +103,6 @@ private:
   osmscout::StyleConfigRef      styleConfig;
   osmscout::MapData             data;
   osmscout::MapPainterQt        *painter;
-  //osmscout::POIMapPainter      	*painter;
   QString                       iconDirectory;
 
   QImage                        *currentImage;

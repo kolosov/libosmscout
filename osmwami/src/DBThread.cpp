@@ -220,18 +220,16 @@ bool DBThread::LoadPOI(osmscout::GeoCoord coord)
 	double deltaLat = 0.00354;
 	double deltaLon = 0.00927;
 
-	double placeLat = aLat + deltaLat/2;
-	double placeLon = aLon + deltaLon/2;
-	std::cout << "Place lat: " << placeLat << " lon: " << placeLon << std::endl;
+	double placeLat = aLat;// + deltaLat/2;
+	double placeLon = aLon;// + deltaLon/2;
+	std::cout << "LoadPOI cur lat:" << aLat << " lon" << aLon <<  ", place lat: " << placeLat << " lon: " << placeLon << std::endl;
 
 	//prepare Node TypeInfo
-	const osmscout::TypeInfoRef curNodeType = std::make_shared<osmscout::TypeInfo>();
+	const osmscout::TypeInfoRef& curNodeType = std::make_shared<osmscout::TypeInfo>();
 	//osmscout::TypeId NodeId = 0xAAAA;
 	//const std::string& NodeGroupName = "MyCafe";
 	//curNodeType->SetNodeId(NodeId);
 	//curNodeType->AddGroup(NodeGroupName);
-
-
 
 	//prepare features
 	//osmscout::FeatureValueBuffer featureBuf;
@@ -241,8 +239,9 @@ bool DBThread::LoadPOI(osmscout::GeoCoord coord)
 	//osmscout::IconStyleRef aIconStyle = new osmscout::IconStyle();
 
 	//prepare icon name
+	const std::string& Pin1IconName = "amenity_cafe";
 	//const std::string& Pin1IconName = "Pin_10_1";
-	const std::string& Pin1IconName = "amenity_parking";
+	//const std::string& Pin1IconName = "parking";
 
 	//aIconStyle->SetIconName(Pin1IconName);
 	curNodeType->SetType(Pin1IconName);
@@ -252,14 +251,21 @@ bool DBThread::LoadPOI(osmscout::GeoCoord coord)
 	//featureBuf.SetType(aTypeConig);
 
 	//prepare Node
-	osmscout::NodeRef aNode = new osmscout::Node();
-	//aNode.Get()->SetCoords(coord);
+	osmscout::NodeRef aNodeRef = new osmscout::Node();
+
+	//osmscout::Node aNode = aNodeRef.Get();
+
 	osmscout::GeoCoord newCoord;
 	newCoord.lat = placeLat;
 	newCoord.lon = placeLon;
-	aNode.Get()->SetCoords(newCoord);
+	aNodeRef.Get()->SetCoords(newCoord);
+	//aNode.SetCoords(newCoord);
 
-	aNode.Get()->SetType(curNodeType);
+	aNodeRef.Get()->SetType(curNodeType);
+	//void SetType(const TypeInfoRef& type);
+	//aNode.SetType(curNodeType);
+
+	//const TypeInfoRef& type;
 
 	//const osmscout::TypeInfoRef aTypeInfo = std::make_shared<osmscout::TypeInfo>();
 
@@ -273,7 +279,7 @@ bool DBThread::LoadPOI(osmscout::GeoCoord coord)
 
 	//osmscout::TypeInfoRef curNodeType = aNode.Get()->GetType();
 
-	data.poiNodes.push_back(aNode);
+	data.poiNodes.push_back(aNodeRef);
 /*
 	osmscout::MapParameter        drawParameter;
 	osmscout::AreaSearchParameter searchParameter;
