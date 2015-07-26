@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
   app.setOrganizationDomain("libosmscout.sf.net");
   app.setApplicationName("WhereAmI");
 
-  settings=new Settings();
+  settings=std::make_shared<Settings>();
 
   settings->SetRoutingVehicle(osmscout::vehicleFoot);
 

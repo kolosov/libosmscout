@@ -251,7 +251,6 @@ bool DBThread::LoadPOI(osmscout::GeoCoord coord)
 	//osmscout::TypeConfigRef MainTypeConig = database->GetTypeConfig();
 
 	//featureBuf.SetType(aTypeConig);
-
 	//prepare Node
 	osmscout::NodeRef aNodeRef = new osmscout::Node();
 
@@ -771,7 +770,7 @@ void DBThread::AddRoute(const osmscout::Way& way)
 {
   QMutexLocker locker(&mutex);
 
-  data.poiWays.push_back(new osmscout::Way(way));
+  data.poiWays.push_back(std::make_shared<osmscout::Way>(way));
 
   FreeMaps();
 
