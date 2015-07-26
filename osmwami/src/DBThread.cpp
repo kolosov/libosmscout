@@ -224,67 +224,24 @@ bool DBThread::LoadPOI(osmscout::GeoCoord coord)
 	double placeLon = aLon;// + deltaLon/2;
 	std::cout << "LoadPOI cur lat:" << aLat << " lon" << aLon <<  ", place lat: " << placeLat << " lon: " << placeLon << std::endl;
 
-	//prepare Node TypeInfo
-	const osmscout::TypeInfoRef& curNodeType = std::make_shared<osmscout::TypeInfo>();
-	//curNodeType->SetIndex(163);
+	//new way start
+	const std::string& myCafeName = "amenity_cafe";
+	const osmscout::TypeConfigRef MainTypeConig = database->GetTypeConfig();
 
-	//osmscout::TypeId NodeId = 0xAAAA;
-	//const std::string& NodeGroupName = "MyCafe";
-	//curNodeType->SetNodeId(NodeId);
-	//curNodeType->AddGroup(NodeGroupName);
+	const osmscout::TypeInfoRef myCafeTypeInfo = MainTypeConig->GetTypeInfo(myCafeName);
 
-	//prepare features
-	//osmscout::FeatureValueBuffer featureBuf;
-	//FeatureValueBuffer buffer = way->GetFeatureValueBuffer();
-	//osmscout::TypeConfigRef aTextConf = std::make_shared<osmscout::TypeConfig>();
-	//osmscout::TextStyleRef aTextStyle = new osmscout::TextStyle();
-	//osmscout::IconStyleRef aIconStyle = new osmscout::IconStyle();
-
-	//prepare icon name
-	const std::string& Pin1IconName = "amenity_cafe";
-	//const std::string& Pin1IconName = "Pin_10_1";
-	//const std::string& Pin1IconName = "parking";
-
-	//aIconStyle->SetIconName(Pin1IconName);
-	curNodeType->SetType(Pin1IconName);
-
-	//osmscout::TypeConfigRef MainTypeConig = database->GetTypeConfig();
-
-	//featureBuf.SetType(aTypeConig);
-	//prepare Node
-	osmscout::NodeRef aNodeRef = new osmscout::Node();
-
-	//osmscout::Node aNode = aNodeRef.Get();
+	osmscout::NodeRef aNodeRef = std::make_shared<osmscout::Node>();
 
 	osmscout::GeoCoord newCoord;
 	newCoord.lat = placeLat;
 	newCoord.lon = placeLon;
 	aNodeRef->SetCoords(newCoord);
-	//aNode.SetCoords(newCoord);
 
-	osmscout::FeatureValueBuffer buffer;
-	buffer.SetType(curNodeType);
-
-	aNodeRef->SetFeatures(buffer);
-
-	aNodeRef->SetType(curNodeType);
-	//void SetType(const TypeInfoRef& type);
-	//aNode.SetType(curNodeType);
-
-	//const TypeInfoRef& type;
-
-	//const osmscout::TypeInfoRef aTypeInfo = std::make_shared<osmscout::TypeInfo>();
-
-	//aTypeInfo->SetType("aaa");
-	//featureBuf.SetType(aTypeInfo);
-	//osmscout::TypeInfoRef type = featureBuf.GetType();
-	//aNode.Get()->SetFeatures(featureBuf);
-	//osmscout::TypeInfoRef curNodeType = aNode.Get()->GetType();
+	aNodeRef->SetType(myCafeTypeInfo);
 
 	data.poiNodes.push_back(aNodeRef);
 
 	return true;
-//	painter->DrawIcon();
 }
 
 void DBThread::GetProjection(osmscout::MercatorProjection& projection)
