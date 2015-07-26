@@ -16,14 +16,20 @@ Window {
     objectName: "main"
     title: "OSMScout"
     visible: true
-    width: 1600
-    height: 900
+    width: 1920
+    height: 1080
+
+    property int categoryListWidth: 596
 
     property double deltaLat: 0.00354
     property double deltaLon: 0.00927
 
-    property double myPlaceLat: 55.74352
-    property double myPlaceLon: 37.60600
+    //lat:47.2054 lon38.9429
+    property double myPlaceLat: 47.2054
+    property double myPlaceLon: 38.9429
+
+//    property double myPlaceLat: 55.74352
+//    property double myPlaceLon: 37.60600
 
     property double myTargetLat: 55.71046
     property double myTargetLon: 37.47212
@@ -115,9 +121,12 @@ Window {
 
         Map {
             id: map
+            //width: 1400
             Layout.fillWidth: true
+            //Layout.fillWidth: false
             Layout.fillHeight: true
-            focus: true
+            //focus: true
+            focus: false
 
 
             function getFreeRect() {
@@ -195,7 +204,7 @@ Window {
                 }
             }
 
-            Rectangle {
+            /*Rectangle {
                 id: meItem
 
                 x: 400
@@ -203,7 +212,7 @@ Window {
                 Image {
                     source: "qrc:/pics/pin.png"
                 }
-            }
+            }*/
 
             Rectangle {
                 id: buttonWhereami
@@ -232,7 +241,7 @@ Window {
                         buttonWhereami.clicked()
                         console.log(buttonWhereami + " clicked" )
 
-                        map.showCoordinates(myPlaceLat, myPlaceLon)
+                        map.showCoordinates(map.myLat, map.myLon)
                     }
                 }
             }
@@ -276,7 +285,9 @@ Window {
 
                 onClicked: {
                     //myPOI.LoadPOI()
-                    myRoutingModel.setStartAndTargetByCoord(myPlaceLat, myPlaceLon, myTargetLat, myTargetLon)
+                    console.log("TestRoute: lastLat:"+ map.lastLat+ " lastLon:" + map.lastLon)
+                    myRoutingModel.setStartAndTargetByCoord(map.myLat, map.myLon, map.lastLat, map.lastLon)
+                    //myRoutingModel.setStartAndTargetByCoord(myPlaceLat, myPlaceLon, myTargetLat, myTargetLon)
                     //myRoutingModel.setStartAndTarget(myPOI.startLoc, myPOI.endLoc)
                     //var startLo = Qt.createComponent()
                     //routingModel.setStartAndTarget(startLocation,
@@ -419,6 +430,54 @@ Window {
                     }
                 }
             }
-        }
+
+            //categoryMenu
+            ColumnLayout {
+                //x: parent.width-width-Theme.horizSpace
+                //y: parent.height-height-Theme.vertSpac
+                x: parent.width - width
+                y: 0
+
+            Rectangle {
+                focus: true
+                width: categoryListWidth; height: 1080
+                //width: 196; height: 500
+                Layout.fillHeight: true
+                color: "transparent"
+
+                //border.color: "grey"
+                //border.width: 1
+                opacity: 0.9
+
+
+                Component {
+                    id: contactDelegate
+                    Item {
+                        width: categoryListWidth; height: 216
+                        //Column {
+                        //Text { text: '<b>Name:</b> ' + name }
+                        Image {
+                            //id: name
+                            source: '../pics/'+iconName
+                        }
+                        //    Text { text: '<b>Number:</b> ' + number }
+                        //}
+                    }
+                }
+
+                ListView {
+                    anchors.fill: parent
+                    model: CategoryModel {}
+                    delegate: contactDelegate
+                    highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
+                    focus: true
+                }
+            }
+            }
+
+        } //map
+
+
+
     }
 }

@@ -34,6 +34,12 @@ class MapWidget : public QQuickPaintedItem
   Q_PROPERTY(double lat READ GetLat)
   Q_PROPERTY(double lon READ GetLon)
 
+  Q_PROPERTY(double lastLat READ GetLastLat)
+  Q_PROPERTY(double lastLon READ GetLastLon)
+
+  Q_PROPERTY(double myLat READ GetMyLat)
+  Q_PROPERTY(double myLon READ GetMyLon)
+
 private:
   osmscout::GeoCoord           center;
   double                       angle;
@@ -46,6 +52,14 @@ private:
 
   // Controlling rerendering...
   bool                          requestNewMap;
+
+  //for test routing
+  int                          lastStartX;
+  int                          lastStartY;
+
+  double lastLat, lastLon; // Destination
+
+  double myLat, myLon; //my place
 
 signals:
   void TriggerMapRenderingSignal();
@@ -85,10 +99,32 @@ public:
       return center.GetLon();
   }
 
+  inline double GetLastLat() const
+  {
+      return lastLat;
+  }
+
+  inline double GetLastLon() const
+  {
+      return lastLon;
+  }
+
+  inline double GetMyLat() const
+  {
+      return myLat;
+  }
+
+  inline double GetMyLon() const
+  {
+      return myLon;
+  }
+
   void mousePressEvent(QMouseEvent* event);
   void mouseMoveEvent(QMouseEvent* event);
   void mouseReleaseEvent(QMouseEvent* event);
   void wheelEvent(QWheelEvent* event);
+
+  void mouseDoubleClickEvent(QWheelEvent* event);
 
   void paint(QPainter *painter);
 };

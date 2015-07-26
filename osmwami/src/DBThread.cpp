@@ -226,6 +226,8 @@ bool DBThread::LoadPOI(osmscout::GeoCoord coord)
 
 	//prepare Node TypeInfo
 	const osmscout::TypeInfoRef& curNodeType = std::make_shared<osmscout::TypeInfo>();
+	//curNodeType->SetIndex(163);
+
 	//osmscout::TypeId NodeId = 0xAAAA;
 	//const std::string& NodeGroupName = "MyCafe";
 	//curNodeType->SetNodeId(NodeId);
@@ -258,10 +260,15 @@ bool DBThread::LoadPOI(osmscout::GeoCoord coord)
 	osmscout::GeoCoord newCoord;
 	newCoord.lat = placeLat;
 	newCoord.lon = placeLon;
-	aNodeRef.Get()->SetCoords(newCoord);
+	aNodeRef->SetCoords(newCoord);
 	//aNode.SetCoords(newCoord);
 
-	aNodeRef.Get()->SetType(curNodeType);
+	osmscout::FeatureValueBuffer buffer;
+	buffer.SetType(curNodeType);
+
+	aNodeRef->SetFeatures(buffer);
+
+	aNodeRef->SetType(curNodeType);
 	//void SetType(const TypeInfoRef& type);
 	//aNode.SetType(curNodeType);
 
@@ -270,43 +277,13 @@ bool DBThread::LoadPOI(osmscout::GeoCoord coord)
 	//const osmscout::TypeInfoRef aTypeInfo = std::make_shared<osmscout::TypeInfo>();
 
 	//aTypeInfo->SetType("aaa");
-
 	//featureBuf.SetType(aTypeInfo);
-
 	//osmscout::TypeInfoRef type = featureBuf.GetType();
-
 	//aNode.Get()->SetFeatures(featureBuf);
-
 	//osmscout::TypeInfoRef curNodeType = aNode.Get()->GetType();
 
 	data.poiNodes.push_back(aNodeRef);
-/*
-	osmscout::MapParameter        drawParameter;
-	osmscout::AreaSearchParameter searchParameter;
 
-	searchParameter.SetBreaker(renderBreakerRef);
-	searchParameter.SetMaximumAreaLevel(4);
-	searchParameter.SetUseMultithreading(currentMagnification.GetMagnification()<=osmscout::Magnification::magCity);
-
-	std::list<std::string>        paths;
-
-	paths.push_back(iconDirectory.toLocal8Bit().data());
-
-	drawParameter.SetIconPaths(paths);
-	drawParameter.SetPatternPaths(paths);
-	drawParameter.SetDebugPerformance(true);
-	drawParameter.SetOptimizeWayNodes(osmscout::TransPolygon::quality);
-	drawParameter.SetOptimizeAreaNodes(osmscout::TransPolygon::quality);
-	drawParameter.SetRenderBackground(true);
-	drawParameter.SetRenderSeaLand(true);
-	drawParameter.SetBreaker(renderBreakerRef);
-
-	osmscout::MercatorProjection projection;
-	GetProjection(projection);
-
-
-	painter->AddPOILabel(projection, drawParameter, coord.lat, coord.lon, "HHHHHHHEEEEEELLLLLLLLLLOOOOOOO");
-*/
 	return true;
 //	painter->DrawIcon();
 }

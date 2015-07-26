@@ -33,7 +33,8 @@ MapWidget::MapWidget(QQuickItem* parent)
 
 {
     setOpaquePainting(true);
-    setAcceptedMouseButtons(Qt::LeftButton);
+    //setAcceptedMouseButtons(Qt::LeftButton);
+    setAcceptedMouseButtons(Qt::AllButtons);
 
     DBThread *dbThread=DBThread::GetInstance();
     //setFocusPolicy(Qt::StrongFocus);
@@ -113,7 +114,7 @@ void MapWidget::HandleMouseMove(QMouseEvent* event)
 
 void MapWidget::mousePressEvent(QMouseEvent* event)
 {
-    if (event->button()==1) {
+    if (event->button()==Qt::LeftButton) {
         DBThread *dbThread=DBThread::GetInstance();
 
         dbThread->GetProjection(startProjection);
@@ -122,7 +123,31 @@ void MapWidget::mousePressEvent(QMouseEvent* event)
         startY=event->y();
 
         setFocus(true);
+    } else if(event->button()==Qt::RightButton) { //right button
+    	lastStartX=event->x();
+    	lastStartY=event->y();
+
+    	osmscout::MercatorProjection projection;
+    	DBThread         *dbThread=DBThread::GetInstance();
+
+    	dbThread->GetProjection(projection);
+
+    	projection.PixelToGeo(lastStartX, lastStartY, lastLon, lastLat);
+
+    	qDebug() << "mousePressEventRight, lon:" << lastLon << " lat:" << lastLat;
+    } else if(event->button()==Qt::MiddleButton) { //middle button
+
+    	osmscout::MercatorProjection projection;
+    	DBThread         *dbThread=DBThread::GetInstance();
+
+    	dbThread->GetProjection(projection);
+
+    	projection.PixelToGeo(event->x(), event->y(), myLon, myLat);
+
+    	qDebug() << "mousePressEventMiddle, lon:" << myLon << " lat:" << myLat;
     }
+
+
 }
 
 void MapWidget::mouseMoveEvent(QMouseEvent* event)
@@ -152,6 +177,17 @@ void MapWidget::wheelEvent(QWheelEvent* event)
     else {
         zoomOut(-numSteps*1.35);
     }
+
+    event->accept();
+}
+
+void MapWidget::mouseDoubleClickEvent(QWheelEvent* event)
+{
+
+	lastStartX=event->x();
+	lastStartY=event->y();
+
+	qDebug() << "mouseDoubleClickEvent";
 
     event->accept();
 }
