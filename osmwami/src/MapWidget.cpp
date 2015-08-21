@@ -135,7 +135,8 @@ void MapWidget::mousePressEvent(QMouseEvent* event)
     	projection.PixelToGeo(lastStartX, lastStartY, lastLon, lastLat);
 
     	qDebug() << "mousePressEventRight, lon:" << lastLon << " lat:" << lastLat;
-    } else if(event->button()==Qt::MiddleButton) { //middle button
+    }
+    /*else if(event->button()==Qt::MiddleButton) { //middle button
 
     	osmscout::MercatorProjection projection;
     	DBThread         *dbThread=DBThread::GetInstance();
@@ -145,7 +146,7 @@ void MapWidget::mousePressEvent(QMouseEvent* event)
     	projection.PixelToGeo(event->x(), event->y(), myLon, myLat);
 
     	qDebug() << "mousePressEventMiddle, lon:" << myLon << " lat:" << myLat;
-    }
+    }*/
 
 
 }

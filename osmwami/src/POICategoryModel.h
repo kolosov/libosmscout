@@ -1,5 +1,5 @@
-#ifndef ROUTINGMODEL_H
-#define ROUTINGMODEL_H
+#ifndef POICATEGORYMODEL_H
+#define POICATEGORYMODEL_H
 
 /*
  OSMScout - a Qt backend for libosmscout and libosmscout-map
@@ -20,17 +20,72 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <map>
+//#include <map>
 
 #include <QObject>
 #include <QAbstractListModel>
+#include <QVariant>
 
-#include <osmscout/Location.h>
-#include <osmscout/Route.h>
+//#include <osmscout/Location.h>
+//#include <osmscout/Route.h>
 
-#include "SearchLocationModel.h"
-#include "DBThread.h"
+//#include "SearchLocationModel.h"
+//#include "DBThread.h"
 
+class Category
+{
+public:
+	Category(const QString &name, const QString &iconName, int id);
+//![0]
+
+    QString name() const;
+    QString iconName() const;
+    int id() const;
+
+private:
+    int m_id;
+    QString m_name;
+    QString m_iconName;
+};
+
+class POICategoryListModel : public QAbstractListModel
+{
+    Q_OBJECT
+    Q_PROPERTY(int count READ rowCount)
+
+public slots:
+
+
+public:
+    enum Roles {
+        CatNameRole = Qt::UserRole +1,
+		CatIconRole,
+		CatIDRole
+    };
+
+public:
+    POICategoryListModel(QObject* parent = 0);
+    ~POICategoryListModel();
+
+    void addCategory(const Category &category);
+
+    QVariant data(const QModelIndex &index, int role) const;
+
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+
+    //Qt::ItemFlags flags(const QModelIndex &index) const;
+
+    QHash<int, QByteArray> roleNames() const;
+
+    //Q_INVOKABLE RouteStep* get(int row) const;
+
+private:
+    QList<Category> m_categories;
+};
+
+
+
+/*
 class RouteStep : public QObject
 {
     Q_OBJECT
@@ -145,5 +200,6 @@ public:
 
     Q_INVOKABLE RouteStep* get(int row) const;
 };
+*/
 
 #endif

@@ -21,12 +21,18 @@
 #include <QGuiApplication>
 #include <QQuickView>
 
+#include <qqml.h>
+#include <qqmlengine.h>
+#include <qqmlcontext.h>
+
+
 // Custom QML objects
 #include "MapWidget.h"
 #include "SearchLocationModel.h"
 #include "RoutingModel.h"
 
-#include "ownpoi.h"
+#include "POILoader.h"
+#include "OwnPOI.h"
 
 // Application settings
 #include "Settings.h"
@@ -36,6 +42,7 @@
 
 // Main Window
 #include "MainWindow.h"
+#include "POICategoryModel.h"
 
 #include <osmscout/util/Logger.h>
 
@@ -88,8 +95,22 @@ int main(int argc, char* argv[])
   if (!DBThread::InitializeInstance()) {
     std::cerr << "Cannot initialize DBThread" << std::endl;
   }
-
   DBThread* dbThread=DBThread::GetInstance();
+
+  if (!POILoader::InitializeInstance()) {
+      std::cerr << "Cannot initialize sql database" << std::endl;
+  }
+  POILoader* sqlThread=POILoader::GetInstance();
+
+  //load places
+
+  QStringList dataList;
+  dataList.append("Apteka 1");
+  dataList.append("Apteka 2");
+  dataList.append("Apteka 3");
+
+  //dataList = sqlThread->loadPOIPlacesFromDBbyNameToStringList("pharmacy");
+
 
   window=new MainWindow(settings,
                         dbThread);
@@ -99,6 +120,18 @@ int main(int argc, char* argv[])
   dbThread->moveToThread(&thread);
   thread.start();
 
+  //load models
+  QQuickView view;
+  QQmlContext *ctxt = window->rootContext();
+
+  POICategoryListModel *categoriesModel = new POICategoryListModel();
+
+  sqlThread->loadPOICat(categoriesModel);
+
+  ctxt->setContextProperty("pharmacyModel", QVariant::fromValue(dataList));
+  ctxt->setContextProperty("categoriesModel",categoriesModel);
+
+
   result=app.exec();
 
   delete window;
@@ -107,6 +140,7 @@ int main(int argc, char* argv[])
   thread.wait();
 
   DBThread::FreeInstance();
+  POILoader::FreeInstance();
 
   return result;
 }

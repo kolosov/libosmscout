@@ -26,6 +26,7 @@
 #include <QMutexLocker>
 #include <QDebug>
 #include <QDir>
+#include <QDebug>
 
 #include <osmscout/util/StopClock.h>
 
@@ -207,6 +208,31 @@ void DBThread::Finalize()
   }
 }
 
+bool DBThread::ShowMe(osmscout::GeoCoord coord)
+{
+
+	double placeLat = coord.lat;// + deltaLat/2;
+	double placeLon = coord.lon;// + deltaLon/2;
+	std::cout << "ShowMe at place lat: " << placeLat << " lon: " << placeLon << std::endl;
+
+	//new way start
+	//const std::string& myCafeName = "amenity_cafe";
+	const std::string& myCafeName = "amenity_wami_ami";
+	const osmscout::TypeConfigRef MainTypeConig = database->GetTypeConfig();
+
+	const osmscout::TypeInfoRef myStartPlaceTypeInfo = MainTypeConig->GetTypeInfo(myCafeName);
+
+	osmscout::NodeRef aNodeRef = std::make_shared<osmscout::Node>();
+
+	aNodeRef->SetCoords(coord);
+
+	aNodeRef->SetType(myStartPlaceTypeInfo);
+
+	data.poiNodes.push_back(aNodeRef);
+
+	return true;
+}
+
 bool DBThread::LoadPOI(osmscout::GeoCoord coord)
 {
 	//mutex
@@ -225,7 +251,9 @@ bool DBThread::LoadPOI(osmscout::GeoCoord coord)
 	std::cout << "LoadPOI cur lat:" << aLat << " lon" << aLon <<  ", place lat: " << placeLat << " lon: " << placeLon << std::endl;
 
 	//new way start
-	const std::string& myCafeName = "amenity_cafe";
+	//const std::string& myCafeName = "amenity_cafe";
+	const std::string& myCafeName = "amenity_wami_cafe";
+	//const std::string& myCafeName = "amenity_wami_pharmacy";
 	const osmscout::TypeConfigRef MainTypeConig = database->GetTypeConfig();
 
 	const osmscout::TypeInfoRef myCafeTypeInfo = MainTypeConig->GetTypeInfo(myCafeName);
@@ -242,6 +270,36 @@ bool DBThread::LoadPOI(osmscout::GeoCoord coord)
 	data.poiNodes.push_back(aNodeRef);
 
 	return true;
+}
+
+bool DBThread::LoadPOIbyType(QString name, double lat, double lon)
+{
+	//TODO mutex
+	qDebug() << "LoadPOI: name:" << name << " lat:" << lat << " lon" << lon;
+
+	//const std::string& myName = "amenity_wami_cafe";
+	const std::string& myName = "amenity_wami_" + name.toStdString();
+	const osmscout::TypeConfigRef MainTypeConig = database->GetTypeConfig();
+
+	const osmscout::TypeInfoRef myTypeInfo = MainTypeConig->GetTypeInfo(myName);
+
+	osmscout::NodeRef aNodeRef = std::make_shared<osmscout::Node>();
+
+	osmscout::GeoCoord newCoord;
+	newCoord.lat = lat;
+	newCoord.lon = lon;
+	aNodeRef->SetCoords(newCoord);
+
+	aNodeRef->SetType(myTypeInfo);
+
+	data.poiNodes.push_back(aNodeRef);
+
+	return true;
+}
+
+void DBThread::ClearPOI()
+{
+	data.poiNodes.clear();
 }
 
 void DBThread::GetProjection(osmscout::MercatorProjection& projection)

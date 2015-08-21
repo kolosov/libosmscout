@@ -84,7 +84,10 @@ public slots:
   void Initialize();
   void Finalize();
 
+  bool ShowMe(osmscout::GeoCoord coord);
   bool LoadPOI(osmscout::GeoCoord coord);
+  bool LoadPOIbyType(QString name, double lat, double lon); //TODO dont call every time for different POI, sent array instead
+  void ClearPOI();
 
 private:
   double                        dpi;

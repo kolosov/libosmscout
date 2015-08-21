@@ -4,6 +4,7 @@
         <file>qml/AboutDialog.qml</file>
         <file>qml/SearchDialog.qml</file>
         <file>qml/CategoryModel.qml</file>
+        <file>qml/PlacesModel.qml</file>
         <file>qml/custom/DialogActionButton.qml</file>
         <file>qml/custom/LineEdit.qml</file>
         <file>qml/custom/LocationSearch.qml</file>

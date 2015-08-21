@@ -392,6 +392,16 @@ void RoutingListModel::DumpNameChangedDescription(const osmscout::RouteDescripti
   route.routeSteps.push_back(changed);
 }
 
+void RoutingListModel::showMe(double myPlaceLat, double myPlaceLon)
+{
+	osmscout::GeoCoord myPlace;
+	myPlace.lat = myPlaceLat;
+	myPlace.lon = myPlaceLon;
+
+	qDebug() << "showMe: " << myPlaceLat << ":" << myPlaceLon;
+
+	DBThread::GetInstance()->ShowMe(myPlace);
+}
 void RoutingListModel::loadPOI(double myPlaceLat, double myPlaceLon)
 {
 	osmscout::GeoCoord myPlace;

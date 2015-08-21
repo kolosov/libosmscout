@@ -7,6 +7,8 @@ import QtQuick.Window 2.0
 
 import QtPositioning 5.3
 
+import QtGraphicalEffects 1.0
+
 import net.sf.libosmscout.map 1.0
 
 import "custom"
@@ -28,17 +30,20 @@ Window {
     property double myPlaceLat: 47.2054
     property double myPlaceLon: 38.9429
 
-//    property double myPlaceLat: 55.74352
-//    property double myPlaceLon: 37.60600
+    property double myStartPlaceLat: 55.74352
+    property double myStartPlaceLon: 37.60600
 
-    property double myTargetLat: 55.71046
-    property double myTargetLon: 37.47212
+    //property double myTargetLat: 55.71046
+    //property double myTargetLon: 37.47212
 
     //property double myPlaceLat: 55.74352
     //property double myPlaceLon: 37.60600
 
     //property double myTargetLat: 55.71046
     //property double myTargetLon: 37.47212
+
+    //INFO LIST root if category list, another value if some places list
+    property string curCategoryName: "root"
 
     function openAboutDialog() {
         var component = Qt.createComponent("AboutDialog.qml")
@@ -53,6 +58,7 @@ Window {
         map.showLocation(location)
     }
 
+    /*
     function onDialogOpened() {
         info.visible = false
         navigation.visible = false
@@ -63,7 +69,12 @@ Window {
         navigation.visible = true
 
         map.focus = true
+    }*/
+
+    function testFunction() {
+        console.log("Test function !!!!!!!!!!!!")
     }
+
 
     PositionSource {
         id: positionSource
@@ -115,6 +126,7 @@ Window {
         POI {
             id: myPOI
         }
+
         RoutingListModel {
             id: myRoutingModel
         }
@@ -180,7 +192,7 @@ Window {
 
             // Use PinchArea for multipoint zoom in/out?
 
-            SearchDialog {
+            /*SearchDialog {
                 id: searchDialog
 
                 y: Theme.vertSpace
@@ -202,7 +214,7 @@ Window {
                         onDialogOpened()
                     }
                 }
-            }
+            }*/
 
             /*Rectangle {
                 id: meItem
@@ -241,7 +253,11 @@ Window {
                         buttonWhereami.clicked()
                         console.log(buttonWhereami + " clicked" )
 
-                        map.showCoordinates(map.myLat, map.myLon)
+                        //put my place and show coord
+                        myPOI.loadAllPOIs()
+                        myRoutingModel.showMe(myStartPlaceLat, myStartPlaceLon)
+                        map.showCoordinates(myStartPlaceLat, myStartPlaceLon)
+                        //map.showCoordinates(map.myLat, map.myLon)
                     }
                 }
             }
@@ -284,14 +300,10 @@ Window {
                 y: 500
 
                 onClicked: {
-                    //myPOI.LoadPOI()
                     console.log("TestRoute: lastLat:"+ map.lastLat+ " lastLon:" + map.lastLon)
-                    myRoutingModel.setStartAndTargetByCoord(map.myLat, map.myLon, map.lastLat, map.lastLon)
-                    //myRoutingModel.setStartAndTargetByCoord(myPlaceLat, myPlaceLon, myTargetLat, myTargetLon)
-                    //myRoutingModel.setStartAndTarget(myPOI.startLoc, myPOI.endLoc)
-                    //var startLo = Qt.createComponent()
-                    //routingModel.setStartAndTarget(startLocation,
-                    //                               destinationLocation)
+                    myRoutingModel.setStartAndTargetByCoord(myStartPlaceLat, myStartPlaceLon, map.lastLat, map.lastLon)
+                    //console.log("TestRoute: lastLat:"+ map.lastLat+ " lastLon:" + map.lastLon)
+                    //myRoutingModel.setStartAndTargetByCoord(map.myLat, map.myLon, map.lastLat, map.lastLon)
                 }
             }
 
@@ -311,103 +323,114 @@ Window {
                     //                               destinationLocation)
                 }
             }
-/*
+
+
             Button {
-                id: buttonNameForSearch
-                //text: "Where am I?"
-                //x: Theme.horizSpace
-                x: parent.width-width-Theme.horizSpace
-                y: parent.height-height-Theme.vertSpace
-
-                //y: parent.height-height-Theme.vertSpace
-                //y: Theme.vertSpace
-                visible: true
-
-                style: ButtonStyle {
-                    id: buttonNameForSearchButtonStyle
-
-                    Image {
-                        id: buttonNameForSearchButtonImageStyle
-                        source: "qrc:/pics/Search.png"
-                        opacity: basicButton.pressed ? 0.5 : 1.0
-                        anchors.centerIn: parent
-                    }
-
-                }
-                onClicked:
-                {
-                    console.log(buttonWhereami + " clicked" )
-                    //nextPage(buttonName)
-                }
-            }
-*/
-
-/*
-            Button
-            {
-                buttonWhereami: "Where am I?"
-                id:spb1; text: qsTr(buttonWhereami);
-                onClicked:
-                {
-                    console.log(buttonWhereami + " clicked" )
-                    //nextPage(buttonName)
-                }
-                Image {
-
-                    source: "qrc:/pics/logo.png"
-                    anchors.centerIn: parent
-                }
-            }
-
-            ColumnLayout {
-                id: whereami
-
+                id: switchModelRootButton
+                text: "Back"
                 x: Theme.horizSpace
+                y: 700
 
-                //y: parent.height-height-Theme.vertSpace
-                y: Theme.vertSpace
-                visible: true
+                onClicked: {
+                    console.log("Back: "+ curCategoryName)
+                    curCategoryName = "root"
+                    infoListView.delegate = categoriesDelegate
+                    //infoListView.model = CategoryModel
+                    infoListView.model = categoriesModel
+                    infoListWidget.color = "transparent"
+                    infoListWidget.opacity = 0.9
+                    infoListWidget.radius = 20
 
-                //spacing: Theme.mapButtonSpace
 
-                MapButton {
-                    id: iAmButton
-                    label: "Where am I?"
-
-                    onClicked: {
-                        openAboutDialog()
-                    }
                 }
             }
-*/
 
-/*
-            // Bottom left column
-            ColumnLayout {
-                id: info
-
+            Button {
+                id: switchModelButton
+                text: "Switch model"
                 x: Theme.horizSpace
-                y: parent.height-height-Theme.vertSpace
-                visible: true
+                y: 800
 
-                spacing: Theme.mapButtonSpace
+                onClicked: {
+                    console.log("Switch model: "+ curCategoryName)
+                    if (curCategoryName == "root1")
+                    {
+                        infoListView.delegate = categoriesDelegate
+                        //infoListView.model = CategoryModel
+                        infoListView.model = categoriesModel
+                        infoListWidget.color = "transparent"
+                        infoListWidget.opacity = 0.9
+                        infoListWidget.radius = 20
 
-                MapButton {
-                    id: about
-                    label: "?"
-
-                    onClicked: {
-                        openAboutDialog()
                     }
+                    else if (curCategoryName == "pharmacy")
+                    {
+                        infoListWidget.color = "white"
+                        infoListWidget.opacity = 1.0
+
+                        infoListView.delegate = placesDelegate
+                        //infoListView.model = placesModel
+                        infoListView.model = pharmacyModel
+
+                        //console.log("Places set section")
+                        //infoListView.section.delegate = placesSectionHeadDelegate
+                        //infoListView.section.property = curCategoryName
+                        //infoListView.section.criteria = ViewSection.FullString
+                    } else if (curCategoryName == "hotel")
+                    {
+                        infoListWidget.color = "white"
+                        infoListWidget.opacity = 1.0
+
+                        infoListView.delegate = placesDelegate
+                        //infoListView.model = placesModel
+                        infoListView.model = hotelModel
+
+                        //console.log("Places set section")
+                        //infoListView.section.delegate = placesSectionHeadDelegate
+                        //infoListView.section.property = curCategoryName
+                        //infoListView.section.criteria = ViewSection.FullString
+                    } else if (curCategoryName == "museum")
+                    {
+                        infoListWidget.color = "white"
+                        infoListWidget.opacity = 1.0
+
+                        infoListView.delegate = placesDelegate
+                        //infoListView.model = placesModel
+                        infoListView.model = museumModel
+
+                        //console.log("Places set section")
+                        //infoListView.section.delegate = placesSectionHeadDelegate
+                        //infoListView.section.property = curCategoryName
+                        //infoListView.section.criteria = ViewSection.FullString
+                    }
+
+
+
+
+                    else {
+                        infoListWidget.color = "white"
+                        infoListWidget.opacity = 1.0
+
+                        infoListView.delegate = placesDelegate
+                        infoListView.model = placesModel
+
+
+                    }
+
+                    //myRoutingModel.loadPOI(myPlaceLat, myPlaceLon)
+                    //myRoutingModel.setStartAndTargetByCoord(myPlaceLat, myPlaceLon, myTargetLat, myTargetLon)
+                    //myRoutingModel.setStartAndTarget(myPOI.startLoc, myPOI.endLoc)
+                    //var startLo = Qt.createComponent()
+                    //routingModel.setStartAndTarget(startLocation,
+                    //                               destinationLocation)
                 }
             }
-            */
 
             // Bottom right column
             ColumnLayout {
                 id: navigation
 
-                x: parent.width-width-Theme.horizSpace
+                x: parent.width-categoryListWidth-Theme.horizSpace - 50
                 y: parent.height-height-Theme.vertSpace
 
                 spacing: Theme.mapButtonSpace
@@ -431,53 +454,244 @@ Window {
                 }
             }
 
+            /////////////////////////////////////////////////////////
             //categoryMenu
+            /////////////////////////////////////////////////////////
+
             ColumnLayout {
                 //x: parent.width-width-Theme.horizSpace
                 //y: parent.height-height-Theme.vertSpac
                 x: parent.width - width
                 y: 0
 
-            Rectangle {
-                focus: true
-                width: categoryListWidth; height: 1080
-                //width: 196; height: 500
-                Layout.fillHeight: true
-                color: "transparent"
-
-                //border.color: "grey"
-                //border.width: 1
-                opacity: 0.9
-
-
-                Component {
-                    id: contactDelegate
-                    Item {
-                        width: categoryListWidth; height: 216
-                        //Column {
-                        //Text { text: '<b>Name:</b> ' + name }
-                        Image {
-                            //id: name
-                            source: '../pics/'+iconName
-                        }
-                        //    Text { text: '<b>Number:</b> ' + number }
-                        //}
-                    }
-                }
-
-                ListView {
-                    anchors.fill: parent
-                    model: CategoryModel {}
-                    delegate: contactDelegate
-                    highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
+                Rectangle {
+                    id: infoListWidget
                     focus: true
-                }
-            }
-            }
+                    width: categoryListWidth; height: 1080
+                    //width: 196; height: 500
+                    Layout.fillHeight: true
+                    //color: "white"
+                    color: "transparent"
+                    opacity: 0.9
+
+                    radius: 20
+
+                    ListView {
+                        id: infoListView
+                        anchors.fill: parent
+                        //model: CategoryModel {}
+                        model: categoriesModel
+                        //model: placesModel
+                        delegate: categoriesDelegate
+
+                        //delegate: placesDelegate
+                        //highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
+                        focus: true
+                        //interactive: false
+
+                        section.criteria: ViewSection.FullString
+                        section.delegate: placesSectionHeadDelegate
+                        section.property: "category"
+                    }
+
+                    //border.color: "grey"
+                    //border.width: 1
+
+                    //////////////////////////////////////////////////////////////
+                    //Places
+                    //////////////////////////////////////////////////////////////
+
+                    ListModel {
+                        id: placesModel
+                        ListElement {
+                            category: "pharmacy"
+                            name: "pharmacy 1"
+                        }
+                        ListElement {
+                            category: "pharmacy"
+                            name: "hotel 2"
+                        }
+                        ListElement {
+                            category: "pharmacy"
+                            name: "museum 3"
+                        }
+                        ListElement {
+                            category: "pharmacy"
+                            name: "nightclub 4"
+                        }
+                        ListElement {
+                            category: "pharmacy"
+                            name: "restaurant 5"
+                        }
+                    }
+
+                    /*
+                    ListModel {
+                        id: pharmacyModel
+                        ListElement {
+                            category: "pharmacy"
+                            name: "pharmacy 1"
+                        }
+                        ListElement {
+                            category: "pharmacy"
+                            name: "hotel 2"
+                        }
+                        ListElement {
+                            category: "pharmacy"
+                            name: "museum 3"
+                        }
+                        ListElement {
+                            category: "pharmacy"
+                            name: "nightclub 4"
+                        }
+                        ListElement {
+                            category: "pharmacy"
+                            name: "restaurant 5"
+                        }
+                    }*/
+
+                    Component {
+                        id: placesSectionHeadDelegate
+                        Rectangle {
+                            //width: container.width
+                            width: categoryListWidth
+                            height: 100
+                            color: "lightsteelblue"
+
+                            Text {
+                                verticalAlignment: Text.AlignVCenter
+                                horizontalAlignment: Text.AlignHCenter
+                                text: "<- Вернуться к категориям"+ '\n' + section
+                                font.bold: true
+                                font.pixelSize: 20
+                                anchors.centerIn: parent
+                                //anchors.fill: parent
+                            }
+
+                            MouseArea {
+                                anchors.fill: parent
+                                //onClicked: fruitModel.setProperty(index, "cost", cost * 2)
+                                onClicked: {
+                                    console.log("Return to categories clicked")
+                                    curCategoryName = "root"
+
+                                }
+                            }
+
+                        }
+                    }
+
+                    Component {
+                        id: placesDelegate
+                        Item {
+                            width: categoryListWidth
+                            height: 100
+
+                            //Column {
+                            //Text { text: '<b>Name:</b> ' + name }
+                            //    Text { text: '<b>Number:</b> ' + number }
+                            //}
+
+                            Text {
+                                verticalAlignment: Text.AlignVCenter
+                                horizontalAlignment: Text.AlignHCenter
+                                //text: '<b>Name:</b> ' + name + " index" + index
+                                text: modelData
+                                anchors.fill: parent
+                            }
+
+                            MouseArea {
+                                anchors.fill: parent
+                                //onClicked: fruitModel.setProperty(index, "cost", cost * 2)
+                                onClicked: {
+                                    console.log(name + " clicked")
+                                    ListView.currentIndex = index
+                                    curCategoryName = name
+                                    //myPOI.loadPOIPlacesFromDBbyName(name)
+                                }
+                            }
+                        }
+                    }
+
+                    //////////////////////////////////////////////////////////////
+                    //Categories
+                    //////////////////////////////////////////////////////////////
+
+                    /*
+                    ListModel {
+                        id: categoriesModel
+                        ListElement {
+                            name: "pharmacy"
+                            iconName: "Pharmacies.png"
+                        }
+                        ListElement {
+                            name: "hotel"
+                            iconName: "Hotels.png"
+                        }
+                        ListElement {
+                            name: "museum"
+                            iconName: "Museums.png"
+                        }
+                        ListElement {
+                            name: "nightclub"
+                            iconName: "Nightclubs.png"
+                        }
+                        ListElement {
+                            name: "restaurant"
+                            iconName: "Restaurants.png"
+                        }
+                    }
+                    */
+
+
+                    Component {
+                        id: categoriesDelegate
+                        Item {
+                            width: categoryListWidth; height: 216
+                            //Column {
+                            Text { text: '<b>Name:</b> ' + name }
+                            //Image {
+                            //    source: '../pics/'+iconName
+                            //}
+                            //    Text { text: '<b>Number:</b> ' + number }
+                            //}
+
+
+                            MouseArea {
+                                id: catMouseArea
+                                anchors.fill: parent
+                                //onClicked: fruitModel.setProperty(index, "cost", cost * 2)
+                                onClicked: {
+                                    console.log(name + " clicked")
+                                    curCategoryName = name
+
+                                    //ListView.currentIndex = index
+                                    //myPOI.loadPOIPlacesFromDBbyName(name)
+                                }
+                            }
+                        }
+
+                    } //component
+
+
+                    /*
+                DropShadow {
+                    fast: true
+                    anchors.fill: infoListWidget
+                    horizontalOffset: 3
+                    verticalOffset: 3
+                    radius: 8.0
+                    samples: 16
+                    color: "#80000000"
+                    source: infoListWidget
+                }*/
+                } //rectangle
+
+
+            } //columnlayout
 
         } //map
 
+    }//gridlayout
 
-
-    }
-}
+} //window

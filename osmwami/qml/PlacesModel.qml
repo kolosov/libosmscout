@@ -1,25 +1,23 @@
 import QtQuick 2.0
 
 ListModel {
-    //id: categoriesModel
+    id: placesModel
     ListElement {
+		category: "pharmacy"
         name: "pharmacy"
-        iconName: "Pharmacies.png"
     }
     ListElement {
+		category: "pharmacy"
         name: "hotel"
-        iconName: "Hotels.png"
     }
     ListElement {
+		category: "pharmacy"
         name: "museum"
-        iconName: "Museums.png"
     }
     ListElement {
         name: "nightclub"
-        iconName: "Nightclubs.png"
     }
     ListElement {
         name: "restaurant"
-        iconName: "Restaurants.png"        
     }
 }

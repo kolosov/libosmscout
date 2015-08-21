@@ -25,6 +25,7 @@ find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Quick REQUIRED)
+find_package(Qt5Sql REQUIRED)
 
 #Find OSM libraries
 find_library(osmscout_lib osmscout PATHS ${OSMSCOUT_SDK_PATH}/lib)
@@ -37,13 +38,13 @@ include_directories ("${PROJECT_SOURCE_DIR}/src")
 
 set(osmwami_src src/OSMScout.cpp src/Settings.cpp src/Theme.cpp 
  src/DBThread.cpp src/MapWidget.cpp src/MainWindow.cpp 
- src/SearchLocationModel.cpp src/RoutingModel.cpp src/ownpoi.cpp)
+ src/SearchLocationModel.cpp src/RoutingModel.cpp src/POILoader.cpp src/OwnPOI.cpp src/POICategoryModel.cpp)
 
 set(osmwami_headers src/Settings.h src/Theme.h src/DBThread.h 
  src/MapWidget.h src/MainWindow.h src/SearchLocationModel.h 
- src/RoutingModel.h src/ownpoi.h)
+ src/RoutingModel.h src/POILoader.h src/OwnPOI.h src/POICategoryModel.h)
 
 add_executable(osmwami ${osmwami_src} res.qrc)
-target_link_libraries(osmwami Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Quick 
+target_link_libraries(osmwami Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Quick Qt5::Sql
  ${osmscout_lib} ${osmscoutmap_lib} ${osmscoutmapqt_lib})
 
